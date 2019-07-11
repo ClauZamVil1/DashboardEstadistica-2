@@ -1,0 +1,330 @@
+﻿<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!--<meta http-equiv="refresh" content="120" />-->
+        <title>Dashboard</title>
+
+        <script src="../js/jquery.min.js"></script>
+        <script src="../bootstrap/js/bootstrap.js"></script>
+        
+        <script src="../js/funciones.js"></script>
+        <script src="../js/AppReporteTerminales.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="../css/StyleModal.css">
+        <link rel="stylesheet" type="text/css" href="../css/StyleTerminalesInformes.css">
+
+    </head>
+    <body>
+   
+    <div id="container" class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 dvHeader" style="font-size: 30px; text-align: center; color:white;background-color: #5f5f5f;margin-bottom:20px;">
+                <a href="../Principal/index.htm"><img src="../img/logocliente_46.png" width="270" border="0"></a><br />
+                <div id="tituloprinc"><strong>DashBoard Detalle Terminales</strong></div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="titulo_row">Filtros</div>
+        </div>
+        <div class="row" >
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 filtros_item" >
+                <div class="">
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                        <div style="color: #FFF; font-size: 13px; text-align: center;">
+                            Estado Terminal
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <div>
+                            <select id="stEstadoTerminal" class="form-control" name="SelectEstadoTerminal">
+                                <option value="0">Todos</option>
+                                <option value="1">Operativos</option>
+                                <option value="3">No Operativos</option>
+                                <!--<option value="4">Pendientes</option>-->
+                            </select> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 filtros_item" >
+                <div class="">
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                        <div style="color: #FFF; font-size: 13px; text-align: center;">
+                            Zona
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <div>
+                            <select id="stZona" class="form-control" name="SelectZona">
+                            </select> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 filtros_item" >
+                <div class="">
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                        <div style="color: #FFF; font-size: 13px; text-align: center;">
+                            Tipo Terminal
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <div>
+                            <select id="stTipoTerminal" class="form-control" name="SelectTipoTerminal">
+                            </select> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+                -->
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 filtros_item" >
+                <div class="">
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                        <div style="color: #FFF; font-size: 13px; text-align: center;">
+                            Formato
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <div>
+                            <select id="stFormato" class="form-control" name="SelectFormato">
+                            </select> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 filtros_item" >
+                <div class="">
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                        <div style="color: #FFF; font-size: 13px; text-align: center;">
+                            Sucursal
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <div>
+                            <select id="stSucursal" class="form-control" name="SelectSucursal">
+                            </select> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 filtros_item" >
+                <div class="">
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                        <div style="color: #FFF; font-size: 13px;  text-align: center;">
+                            Condición Monitoreo
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <div>
+                            <select id="stCondicionMonitoreo" class="form-control" name="SelectCondicionMonitoreo">
+                            </select> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="">
+            <div class="row" >
+                <div class="titulo_row2">Listado General</div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_sides_0 border_gris" style="height: 350px; overflow: auto; overflow-x: hidden;">
+                <table id="tbListadoGeneral" class="table table-bordered">
+                    <thead style="background-color:#5f5f5f; color: #FFF;">
+                        <tr>
+                            <td>Formato</td>
+                            <td>Zona</td>
+                            <td>Sucursal</td>
+                            <td>ID</td>
+                            <td>Tipo Equipo</td>
+                            <td>Estado Terminal</td>
+                            <td>Condición Monitoreo</td>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #fff; cursor:pointer;">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="row" >
+                <div class="titulo_row2">Detalle Estado Terminal</div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_sides_0" >
+                <div class="">
+                    <div class="estados_col1 col-xs-12 col-sm-12 col-md-4 col-lg-4 padding_sides_0">
+                        <table class="table table-bordered estado_tabla1">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td >Serie</td>
+                                    <td id="tdDET_Serie" style="background-color: #f2f2f2;"></td>
+                                </tr>
+                                <tr>
+                                    <td >IP</td>
+                                    <td id="tdDET_Ip" style="background-color: #f2f2f2;"></td>
+                                </tr>
+                                <tr>
+                                    <td >Ubicación</td>
+                                    <td id="tdDET_Ubicacion" style="background-color: #f2f2f2;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="estado_tabla2">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_sides_0">
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_sides_0">
+                                <div class="">
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 padding_sides_0">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Comunicación</td>
+                                                    <td id="dvDET_Comunicacion" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Aplicación</td>
+                                                    <td id="dvDET_Aplicación" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Host</td>
+                                                    <td id="dvDET_Host" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Impresora</td>
+                                                    <td id="dvDET_Impresora" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Lector BM</td>
+                                                    <td id="dvDET_LectorBM" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 padding_sides_0">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Estado Touch</td>
+                                                    <td id="dvDET_EstadoTouch" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Temp. CPU</td>
+                                                    <td id="dvDET_TempCPU" style="background-color: #eee;">
+                                                       
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Uso CPU</td>
+                                                    <td id="dvDET_UsoCPU" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Uso Disco</td>
+                                                    <td id="dvDET_UsoDisco" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color:#616362; color: #FFF;">Uso Memoria</td>
+                                                    <td id="dvDET_UsoMemoria" style="background-color: #eee;">
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="estados_col2 col-xs-12 col-sm-12 col-md-8 col-lg-8 padding_sides_0 estado_tabla3_cont">
+                        <table class="estado_tabla3 table table-bordered">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="estado3_nombre" style="width: 20%;">Fecha Evento</td>
+                                    <td class="estado3_valor" id="tdDET_FechaEvento" ></td>
+                                </tr>
+                                <tr>
+                                    <td class="estado3_nombre" >Ultima Falla</td>
+                                    <td class="estado3_valor" id="tdDET_UltimaFalla" ></td>
+                                </tr>
+                                <tr>
+                                    <td class="estado3_nombre" >Descripción</td>
+                                    <td class="estado3_valor" id="tdDET_Descripcion" ></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row botones_nav">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="ver-detalle-boton"  style="margin-top:5px; text-align: right;">    
+                    <button id="btnVerDetalle" style="width:100px;" type="button" class="btn btn-primary" onclick="AbrirDetalle();">
+                        Ver Detalle
+                    </button>   
+                </div>  
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="ver-detalle-boton"  style="margin-top:5px; text-align: right;">    
+                    <button style="width:100px;" type="button" class="btn btn-primary" onclick="window.location='../Principal/index.htm'">
+                        Inicio
+                    </button>   
+                    <button style="width:100px;" type="button" class="btn btn-primary"  onclick="Volver();">
+                        Volver
+                    </button>
+                </div>  
+            </div>
+        </div>
+    </div>
+   <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <!--div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Cargando...</h4>
+                </div-->
+                    <div class="modal-body">
+                        <img src="../img/logocliente_46.png" width="270">
+                        <br>
+                        <h1>Cargando...</h1>
+                        <p>Por favor espere unos segundos</p>
+                    </div>
+                    <!--div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div-->
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

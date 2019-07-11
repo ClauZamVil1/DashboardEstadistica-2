@@ -1,0 +1,120 @@
+body{
+	background-color: #EFF3F4;
+}
+.semaforo_Normal{
+	height: 100%;
+	width:10%;
+	background-color: green;
+}
+.semaforo_Alerta{
+	height: 100%;
+	width:10%;
+	background-color: yellow;
+}
+.semaforo_Normal{
+	height: 100%;
+	width:10%;
+	background-color: red;
+}
+.terminal_leds_col{
+	width:30%;
+	height: auto;
+}
+
+#tituloPrincipal{
+	font-size: 35px;
+	/*border:1px solid black;*/
+	text-align: center;
+	margin:10px 0px 0px 0px;
+	padding: 10px 0px 10px 0px;
+	/*border-radius:15%; */
+}
+
+#contenedorGeneral{
+	height: 100%;
+}
+
+#leyenda{
+	width: 100%;
+	font-size:12px;
+	height:32px;
+	line-height: 30px;
+	text-align: center;
+	margin-top: 5px;
+}
+
+#leyenda ul{
+	display: inline;
+	list-style-type: none;
+}
+
+#leyenda ul li{
+	display: inline-block;
+	text-align: right;
+}
+
+.holder {
+margin: 15px 0;
+width: 93%;
+  float:left;
+  display: block;
+}
+
+.holder a {
+	-moz-user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.42857;
+	margin-bottom: 0;
+	padding: 6px 12px;
+	text-align: center;
+	touch-action: manipulation;
+	vertical-align: middle;
+	white-space: nowrap;
+	background-color: #fff;
+	border-color: #ccc;
+	color: #333;
+	margin-left: 5px;
+	margin-right 5px;
+}
+
+.holder a:hover {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	color: #337ab7;
+	line-height: 1.42857;
+	margin-left: -1px;
+	padding: 6px 12px;
+	position: relative;
+	text-decoration: none;
+	margin-left: 5px;
+	margin-right 5px;
+}
+
+.holder a.jp-previous { margin-right: 15px; }
+.holder a.jp-next { margin-left: 15px; }
+.holder a.jp-current, a.jp-current:hover {
+	color: #FF4242;
+	font-weight: bold;
+}
+.holder a.jp-disabled, a.jp-disabled:hover {
+	color: #bbb;
+}
+
+.holder a.jp-current, a.jp-current:hover,
+.holder a.jp-disabled, a.jp-disabled:hover {
+	background-color: #337ab7;
+	border-color: #337ab7;
+	color: #fff;
+	cursor: default;
+	z-index: 3;
+}
+
+.holder span { margin: 0 5px; }
+
+ul.u {list-style-type: none;}

@@ -1,0 +1,89 @@
+﻿<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!--meta http-equiv="refresh" content="120" /-->
+        <title>Dashboard</title>
+
+        
+        <script src="../js/highcharts.js"></script>
+        <script src="../js/highcharts-more.js"></script>
+        <script src="../js/modules/solid-gauge.js"></script>
+        <script src="../js/jquery.min.js"></script>
+        <script src="../bootstrap/js/bootstrap.js"></script>
+        <script src="../js/funciones.js"></script>
+        <script src="../js/bootstrap-submenu.js"></script>
+        <script src="../js/appTerminales.js"></script>
+
+        		<!--Paginación-->
+        <script src="../js/paginacion/highlight.pack.js"></script>
+        <script src="../js/paginacion/tabifier.js"></script>
+        <script src="../js/paginacion/js.js"></script>
+        <script src="../js/paginacion/jPages.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-submenu.css">
+        <link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="../css/Style.css">
+		<link rel="stylesheet" type="text/css" href="../css/StyleModal.css">
+        <link rel="stylesheet" type="text/css" href="../css/StyleTerminales.css">
+    </head>
+    <body>
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 dvHeaderCmr" style="font-size: 30px; text-align: center; color:white; background-color: #5f5f5f;">
+                  <a href="../Principal/index.htm"><img src="../img/logocliente_46.png" width="270" border="0"></a><br />
+                  <div id="tituloprinc"><strong>DashBoard Status por Terminal</strong></div>
+              </div>  
+          </div>
+          <div id="row_contenedor" class="row">
+              <ul id="ulPaginacion">
+              </ul>
+          </div>
+  			<div  class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+			    	<div class="row" style="margin-top:10px; text-align:right;">
+			    		<div class="holder"></div>
+				    	<!--<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">	
+				        </div>
+				        <div  class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					        <div class="ver-detalle-boton">    
+					        	<button id="btnVerDetalle" type="button" class="btn btn-primary">Siguiente</button>
+					        </div> 
+				        </div>-->
+			        </div>
+				</div>
+
+               <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                      <div class="Row"  style = "margin-right: 0px;">
+                         <div class=""  style="margin-top:25px; margin-right: 300px;">      
+					        	<button  type="button" class="btn btn-primary" onclick="Volver();" style = "margin-right: 0px;">Volver</button>
+					        </div>	
+                     </div>
+                </div>
+			</div>
+      </div>
+   
+    <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <!--div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Cargando...</h4>
+                </div-->
+                    <div class="modal-body">
+                        <img src="../img/logocliente_46.png" width="405" height="87">
+                        <br>
+                        <h1>Cargando...</h1>
+                        <p>Por favor espere unos segundos</p>
+                    </div>
+                    <!--div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div-->
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
