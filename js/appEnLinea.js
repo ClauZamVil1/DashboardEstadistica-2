@@ -22,6 +22,7 @@ function mostrarMensaje(tipo, mensaje) {
 }
 
 function EquipoClientes() {
+    debugger;
     try {
         var datos = obtenerDatosDashboardEquiposCliente(IDCLIENTE, 0, 0, 'todos');
         if (datos.length > 0) {
@@ -118,16 +119,16 @@ function creaHtml(i) {
     cadena += '</ul>';
     cadena += '</div>';
     cadena += '</div>';
-    cadena += '<div id="container_gauge_fallos">';
-    cadena += '<div class="container_gauge_fallos1" id="container_gauge_fallos1_' + i + '">0%</div>';
-    cadena += '<div class="container_gauge_fallos2" id="container_gauge_fallos2_' + i + '"></div>';
-    cadena += '</div>';
+    //cadena += '<div id="container_gauge_fallos">';
+    //cadena += '<div class="container_gauge_fallos1" id="container_gauge_fallos1_' + i + '">0%</div>';
+    //cadena += '<div class="container_gauge_fallos2" id="container_gauge_fallos2_' + i + '"></div>';
+    //cadena += '</div>';
     cadena += '</div>';
     cadena += '</div>';
     cadena += '<div class="col-xs-12 col-sm-7 col-md-6 col-lg-8" id="dvDetalleTerminales">';
     cadena += '<div class="row">';
     cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-    cadena += '<h2 id="DB_titulo_principal" class="titulo-principal">Detalle Terminales</h2>';
+    //cadena += '<h2 id="DB_titulo_principal" class="titulo-principal">Detalle Terminales</h2>';
     cadena += '<div class="ver-detalle-boton">';
     cadena += '<div></div>';
     cadena += '<button id="btnVerDetalle_' + i + '" type="button" class="btn" onclick="javascript:verDetalle('+i+')">Ver detalle</button>';
@@ -136,32 +137,32 @@ function creaHtml(i) {
     cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
     cadena += '<div id="dvContentDetalleTerminales">';
     cadena += '<div class="dvContentDetalleTerminales_item_l">';
-    cadena += 'Operativos';
+    cadena += '<span class="glyphicon glyphicon-ok"></span> Operativos';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdOperativosEquipos_' + i + '"></div>';
     cadena += '<div class="dvDetalleTerminales_datoPor" id="tdOperativosPorcentaje"></div>';
     cadena += '</div>';
     cadena += '<div class="dvContentDetalleTerminales_item_r">';
-    cadena += 'Sin Comunicación';
+    cadena += '<span class="glyphicon glyphicon-phone-alt"></span> Sin Comunicación';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdSinComunicacionEquipos_' + i + '"></div>';
     cadena += '<div class="dvDetalleTerminales_datoPor" id="tdSinComunicacionPorcentaje">';
     cadena += '</div></div>';
     cadena += '<div id="capaImpresora_' + i + '">';
-    cadena += '<div class="dvContentDetalleTerminales_item_l">Impresora Atascada';
+    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-time"></span> Impresora Atascada';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdImpIrre_' + i + '"></div>';
     cadena += '<div class="dvDetalleTerminales_datoPor" id="tdImpIrre80MMPorcentaje"></div></div>';
-    cadena += '<div class="dvContentDetalleTerminales_item_r">Impresora sin Papel';
+    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-duplicate"></span> Impresora sin Papel';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdImpSinPapel_' + i + '"></div>';
     cadena += '<div class="dvDetalleTerminales_datoPor" id="tdImpSinPapelPorcentaje"></div>';
     cadena += '</div>';
     cadena += '</div>';//capaImpresora
     cadena += '<div id="errorPeriferico_' + i + '">';
-    cadena += '<div class="dvContentDetalleTerminales_item_l">Error Periféricos';
+    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-warning-sign"></span> Error Periféricos';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdErrorPerifericosEquipos_' + i + '"></div>';
     cadena += '<div class="dvDetalleTerminales_datoPor" id="tdErrorPerifericosPorcentaje"></div></div>';
     cadena += '</div>'
-    cadena += '<div class="dvContentDetalleTerminales_item_r">Total';
+    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-list-alt"></span> Total';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEquipos_' + i + '"></div></div>';
-    cadena += '<div class="dvContentDetalleTerminales_item_l">Terminales Pendientes Cliente';
+    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-user"></span> Terminales Pendientes Cliente';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEPPPDCL_' + i + '"></div></div>';
     cadena += '</table></div></div></div></div>';
     cadena += '<div class="">';
@@ -187,7 +188,7 @@ function creaHtml(i) {
     cadena += '</div></div></div></div>';
     return cadena;
 }
-function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
+/*function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
     Highcharts.chart('container_gauge_' + i, {
         chart: {
             type: 'column',
@@ -244,7 +245,80 @@ function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
     },
 	function callback() {
 	});
+}*/
+
+function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
+    Highcharts.chart('container_gauge_' + i, {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            height: 250,
+            width: 250
+        },
+        credits: {
+            enabled: true
+        },
+        title: {
+            text: ''
+        },
+        colors:['green','red'],
+        xAxis: {
+            categories: [''],
+            lineColor: '#fff',
+            tickWidth: 0,
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            gridLineColor: '#fff',
+            title: {
+                text: ''
+            },
+            labels: {
+                style: {
+                    color: '#fff'
+                }
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}"></span><b>{point.percentage:.0f}%</b><br/>',
+            shared: true,
+            enabled: false
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: 'Estado',
+            colorByPoint: true,
+            data: [{
+                name: 'En linea',
+                y: porcentajeEquiposUpTime,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Falla',
+                y: porcentajeFallaGrafico
+            }]
+        }]
+    },
+    function callback() {
+    });
 }
+
+
 function verDetalle(i) {
     $("#myModal").modal('show');
     var idtipoequipo = $("#validTipoEquipo_" + i).html();
@@ -269,3 +343,4 @@ function VerDetalleTerminales(seleccionado,i) {
     vars = "equipo=" + idtipoequipo + '&desequipo=' + equidescrip + '&seleccionado=' + filtroSeleccionado + '&titulo=' + equidescrip ;
     window.location.href = "../ReporteDetalle/DetalleTerminalesInformes.html?" + vars;
 }
+

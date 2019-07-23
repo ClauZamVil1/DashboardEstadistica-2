@@ -16,14 +16,14 @@
 .highcharts-container {
 	position: relative !important; 
 	overflow: visible !important;
-	width: 59px !important;
-	height: 240px !important;
-	text-align: left !important;
+	width: 250px !important;
+	height: 300px !important;
+	text-align: center !important;
 	line-height: normal !important;
 	z-index: 0 !important;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-	left: -78px !important;
-	top: -10px !important;
+	left: 0px !important;
+	top: 0px !important;
 }
 
 .container_gauge_cont{
@@ -276,9 +276,9 @@
 .contenedorCmr{
 	border: 1px solid #ddd;
     background-color: #fff;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    width: 80%;
+    margin-left: 20%;
+    margin-right: 5%;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
@@ -395,4 +395,66 @@
 @font-face {
     font-family: "PFBeauSansPro-Regular";
     src: url('font/PFBeauSansPro-Regular.ttf') format('truetype');
+}
+
+@media (min-width: 768px) {
+	.navbar-collapse {
+	    height: auto;
+	    border-top: 0;
+	    box-shadow: none;
+	    max-height: none;
+	    padding-left:0;
+	    padding-right:0;
+	    max-width: 200px;
+	    border-style: solid;
+	    border-width: 1px;
+	    border-color: #ddd;
+	    -webkit-border-radius: 6px;
+	    -moz-border-radius: 6px;
+	    border-radius: 6px;
+	    padding: 0px;
+	    text-align: center;
+	}
+	.navbar-collapse.collapse {
+	    display: block !important;
+	    width: auto !important;
+	    padding-bottom: 0;
+	    overflow: visible !important;
+	}
+	.navbar-collapse.in {
+	    overflow-x: visible;
+	}
+
+	.navba
+	{
+		max-width:200px;
+		margin-right: 0;
+		margin-left: 0;
+	}	
+
+	.navbar-nav,
+	.navbar-nav > li,
+	.navbar-left,
+	.navbar-right,
+	.navbar-header
+	{float:none !important;}
+
+	.navbar-right .dropdown-menu {left:0;right:auto;}
+	.navbar-collapse .navbar-nav.navbar-right:last-child {
+	    margin-right: 0;
+	}
+
+	.cabeceramenu
+	{
+		background-color: #5f5f5f;
+		font-family: "Arial";
+		font-size: 18px;
+		text-align: center;
+		color: white;
+	}
+
+	.limenu
+	{
+		color: black;
+	}
 }
