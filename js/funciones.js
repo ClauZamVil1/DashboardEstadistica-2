@@ -9,7 +9,8 @@ Modificado por: Juan González
 //var url = "http://172.29.114.95/ServicioDashBoardCMR_Test/";//Equipo Juan
 //var url = "http://localhost:54682/";
 var url = "http://localhost/ServicioDashBoard/";
-var IDCLIENTE = 46;
+//var IDCLIENTE = 46; //coopeuch
+var IDCLIENTE = 12;
 
 var _jsonNiveles = {
     "nivel": 1,

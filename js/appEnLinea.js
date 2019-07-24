@@ -24,7 +24,7 @@ function mostrarMensaje(tipo, mensaje) {
 function EquipoClientes() {
     debugger;
     try {
-        var datos = obtenerDatosDashboardEquiposCliente(IDCLIENTE, 0, 0, 'todos');
+        var datos = obtenerDatosDashboardEquiposCliente(IDCLIENTE, 0, 0, 0);
         if (datos.length > 0) {
             $(datos).each(function (key, value) {
                 if (value.desTipoEquipo != "Totem-T22 Paleta Inalámbrico Sin Modem Datos") {
