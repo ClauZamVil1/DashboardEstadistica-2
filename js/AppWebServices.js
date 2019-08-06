@@ -253,6 +253,10 @@ function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
     });
 }
 
+function creaGraficoGauge1(){
+    
+}
+
 
 function verDetalle(i) {
     $("#myModal").modal('show');

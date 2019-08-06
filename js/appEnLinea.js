@@ -6,6 +6,7 @@ Modificado por: Juan González
 ***********/
 var _numDias = 0;
 var _tituloSeleccionado = "";
+var idCliente = "12"; //ID DE WALMART
 
 
 $(document).ready(function () {
@@ -24,68 +25,35 @@ function mostrarMensaje(tipo, mensaje) {
 function EquipoClientes() {
     debugger;
     try {
-        var datos = obtenerDatosDashboardEquiposCliente(IDCLIENTE, 0, 0, 0);
+        var datos = obtenerDatosDashboard(IDCLIENTE, 0, 0, 0);
         if (datos.length > 0) {
             $(datos).each(function (key, value) {
-                if (value.desTipoEquipo != "Totem-T22 Paleta Inalámbrico Sin Modem Datos") {
+                if (true) {
+                    debugger;
                     i = key + 1;
-                    $("#contendorDash").append(creaHtml(i));
-                    $("#validTipoEquipo_" + i).html(value.idTipoEquipo);
-                    $("#titulo_" + i).html("Resumen General " + value.desTipoEquipo);
-                    $("#valEquipoDescripcion_" + i).html(value.desTipoEquipo);
+                    $("#contendorDash").append(creaHtml(i,value.idNodoNivel));
+                    //$("#validTipoEquipo_" + i).html(value.idTipoEquipo);
+                    $("#titulo_" + i).html("Resumen General " + value.descNodoNivel);
+                    //$("#valEquipoDescripcion_" + i).html(value.desTipoEquipo);
 
-                    $("#container_gauge_fallos1_" + i).html(value.porcDwTime + " %");
+                    $("#container_gauge_fallos1_" + i).html(value.porcDWTime + " %");
                     $("#container_gauge_fallos2_" + i).html("Terminales fuera de línea");
-                    creaGraficoBarra(i, value.porcUpTime, value.porcDwTime);
-                    /*Escribe contadores*/
-                    if (parseInt(value.totalContadores) > 0) {
-                        cadcont = "";
-                        $(value.listaDashboardTipoEquipoClienteContador.Lista).each(function (key2, value2) {
-                            //cadcont += '<div class="detalleUso_item">';
-                            //cadcont += '<div class="detalleUso_item_nombre">' + value2.nombContador + '</div>';
-                            //cadcont += '<div class="detalleUso_item_valor" id="liConsImpresion">' + value2.totalContador + '</div>';
-                            //cadcont += '</div>';
-                            //cadcont += '<div class="detalleUso_separador"></div>';
-                        });
-                        //$("#detalle_contador_" + i).html(cadcont);
-                    }
-                    /*valores para sumar los no operativos*/
-                    if (value.aplicaImp == 1) {
-                        vAtr1 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'SinPapel');
-                        vAtr1 = (parseInt(vAtr1) == -99) ? 0 : parseInt(vAtr1);
-                        vAtr3 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'Irrecuperable');
-                        vAtr3 = (parseInt(vAtr3) == -99) ? 0 : parseInt(vAtr3);
-                        vAtr4 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'TapaAbierta');
-                        vAtr4 = (parseInt(vAtr4) == -99) ? 0 : parseInt(vAtr4);
-                    } else {
-                        vAtr1 = 0;
-                        vAtr3 = 0;
-                        vAtr4 = 0;
-                    }
-                    vAtr2 = parseInt(value.cantEqFueraLinea);
-                    vAtr5 = (parseInt(value.totalPerifericoError) == -99) ? 0 : parseInt(value.totalPerifericoError);
-                    var sumaNoOperativo = parseInt(vAtr1 + vAtr2 + vAtr3 + vAtr4 + vAtr5);
-                    var totalOperativos = parseInt(value.totalEq) - parseInt(sumaNoOperativo);
-
-                    $("#tdOperativosEquipos_" + i).html(totalOperativos); //Operativos
-                    $("#tdSinComunicacionEquipos_" + i).html(value.cantEqFueraLinea); //Sin Comunicación
-
-                    /*Aplica impresora*/
-                    if (value.aplicaImp == 0) { $("#capaImpresora_" + i).hide(); }
-                    if (value.totalPerifericoError == "-99") { $("#errorPeriferico_" + i).hide(); }
-
-                    if (value.aplicaImp != 0) {
-                        $("#tdImpSinPapel_" + i).html(vAtr1); // Impresora sin papel
-                        var sumaerre = vAtr3 + vAtr4;
-                        $("#tdImpIrre_" + i).html(sumaerre); // Impresora Atascada
-                    }
+                    creaGraficoBarra(i, value.porcUpTime, value.porcDWTime);
                     
+                    
+                    
+                    var sumaNoOperativo = parseInt(value.totalEqFueraLinea) + parseInt(value.totalEqImpAtascada) + parseInt(value.totalEqImpSinPapel) + parseInt(value.totalEqPerifericoErr);
+                    var totalOperativos = parseInt(value.totalEqEnLinea) + parseInt(sumaNoOperativo);
 
-                    $("#tdErrorPerifericosEquipos_" + i).html(value.totalPerifericoError); //Error Periféricos
-                    $("#tdTotalEquipos_" + i).html(value.totalEq); //Total
-                    $("#tdTotalEPPPDCL_" + i).html(value.cantEqFueraLineaPend); //Terminales Pendientes Cliente 
-                    $("#tdTotalTerminales_" + i).html(value.totalEq); //Total Terminales
-                    $("#lblEquiposOK_" + i).html(totalOperativos);//Operativos
+                    $("#tdOperativosEquipos_" + i).html(value.totalEqEnLinea); //Operativos
+                    $("#tdSinComunicacionEquipos_" + i).html(value.totalEqFueraLinea); //Sin Comunicación                   
+                    $("#tdImpSinPapel_" + i).html(value.totalEqImpSinPapel); // Impresora sin papel
+                    $("#tdImpIrre_" + i).html(value.totalEqImpAtascada); // Impresora Atascada
+                    $("#tdErrorPerifericosEquipos_" + i).html(value.totalEqPerifericoErr); //Error Periféricos
+                    $("#tdTotalEquipos_" + i).html(totalOperativos); //Total
+                    $("#tdTotalEPPPDCL_" + i).html(value.totalEqNoAplica); //Terminales Pendientes Cliente 
+                    $("#tdTotalTerminales_" + i).html(totalOperativos); //Total Terminales
+                    $("#lblEquiposOK_" + i).html(value.totalEqEnLinea);//Operativos
                     $("#lblEquiposFalla_" + i).html(sumaNoOperativo);//No Operativo
                     
                 }
@@ -98,7 +66,7 @@ function EquipoClientes() {
 
 }
 
-function creaHtml(i) {
+function creaHtml(i, idNodoNivel) {
     var cadena = "";
     cadena += '<div id="valEquipoDescripcion_'+i+'" style="display:none"></div>';
     cadena += '<div id="validTipoEquipo_' + i + '" style="display:none"></div>';
@@ -131,7 +99,7 @@ function creaHtml(i) {
     //cadena += '<h2 id="DB_titulo_principal" class="titulo-principal">Detalle Terminales</h2>';
     cadena += '<div class="ver-detalle-boton">';
     cadena += '<div></div>';
-    cadena += '<button id="btnVerDetalle_' + i + '" type="button" class="btn" onclick="javascript:verDetalle('+i+')">Ver detalle</button>';
+    cadena += '<button id="btnVerDetalle_' + i + '" type="button" class="btn" onclick="javascript:verDetalle('+i+','+idNodoNivel+')">Ver detalle</button>';
     cadena += '</div>';
     cadena += '</div>';
     cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
@@ -160,9 +128,9 @@ function creaHtml(i) {
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdErrorPerifericosEquipos_' + i + '"></div>';
     cadena += '<div class="dvDetalleTerminales_datoPor" id="tdErrorPerifericosPorcentaje"></div></div>';
     cadena += '</div>'
-    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-list-alt"></span> Total';
-    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEquipos_' + i + '"></div></div>';
-    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-user"></span> Terminales Pendientes Cliente';
+    //cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-list-alt"></span> Total';
+    //cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEquipos_' + i + '"></div></div>';
+    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-user"></span> Terminales Pendientes Cliente';
     cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEPPPDCL_' + i + '"></div></div>';
     cadena += '</table></div></div></div></div>';
     cadena += '<div class="">';
@@ -319,12 +287,13 @@ function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
 }
 
 
-function verDetalle(i) {
+function verDetalle(i,idNodoNivel) {
+    debugger;
     $("#myModal").modal('show');
-    var idtipoequipo = $("#validTipoEquipo_" + i).html();
-    var equidescrip = $("#valEquipoDescripcion_" + i).html();
+    //var idtipoequipo = $("#validTipoEquipo_" + i).html();
+    //var equidescrip = $("#valEquipoDescripcion_" + i).html();
     //vars = _idtipoequipo + '&' + idzona + "&" + _tituloSeleccionado + '&' + valdesczona;
-    vars = "equipo=" + idtipoequipo + '&desequipo=' + equidescrip;
+    vars = "idCliente=" + idCliente + '&idNodoNivel=' + idNodoNivel;
     setTimeout(function () { window.location.href = "../Zonas/indexZonas.htm?" + vars; }, 1000);
 }
 function VerDetalleTerminales(seleccionado,i) {

@@ -8,7 +8,8 @@ Modificado por: Juan González
 //var url = "http://192.168.10.24:8080/serviciodashboardCoopeuch/";//producción interno
 //var url = "http://172.29.114.95/ServicioDashBoardCMR_Test/";//Equipo Juan
 //var url = "http://localhost:54682/";
-var url = "http://localhost/ServicioDashBoard/";
+//var url = "http://localhost/ServicioDashBoard/";
+var url = "http://localhost:54682/";
 //var IDCLIENTE = 46; //coopeuch
 var IDCLIENTE = 12;
 
@@ -136,6 +137,7 @@ function formatoMiles(entrada) {
 }
 
 function RetornaAJAX(iPagina, iFuncion, iDATA, iEjecucion) {
+    debugger;
     var options = {
         async: false,
         crossDomain: true,
@@ -144,7 +146,7 @@ function RetornaAJAX(iPagina, iFuncion, iDATA, iEjecucion) {
         data: iDATA,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        success: function (msg) { eval(iEjecucion); },
+        success: function (result) { },
         error: function (result) {
             alert(result.statusText + ' - ' + result.status);
         }
@@ -152,51 +154,35 @@ function RetornaAJAX(iPagina, iFuncion, iDATA, iEjecucion) {
     return options;
 }
 
-function obtenerDatosDashboard(idCliente, nivel, idGrupo) {
+function obtenerDatosDashboard(idCliente, idNegocio, nivel, idGrupo) {
+    debugger;
     resultado = null;
-    var parametro = RetornaAJAX(url + "obtenerDatos.svc", "ObtenerInformacionDashBoard", '{"idCliente": ' + idCliente + ',"nivel": ' + nivel + ',"idGrupo": ' + idGrupo + '}', null);
+    var parametro = RetornaAJAX(url + "obtenerDatos.svc", "ObtenerInformacionDashBoardWalmart", '{"idCliente": ' + idCliente + ',"idNegocio": ' + idNegocio + ',"nivel": ' + nivel + ',"idGrupo": ' + idGrupo + '}', null);
     $.when($.ajax(parametro)).done(function (result) {
-        if (result.obtenerInformacionDashBoardResult != null) {
+        debugger;
+        if (result.obtenerInformacionDashBoardWalmartResult != null) {
 
-            oJSON = result.obtenerInformacionDashBoardResult;
+            oJSON = result.obtenerInformacionDashBoardWalmartResult;
             var item;
             resultado = [];
             $(oJSON).each(function () {
                 ///////if($(this)[0].cantEqEnLinea > 0){//está dejando afuera los equipos que no se encuentran en linea. Hay que validar por tamaño Length
                 item = {
-                    'idNodoDetalle': $(this)[0].idNodoDetalle,
-                    'descripcion': $(this)[0].descripcion,
-                    'idNodoPadre': $(this)[0].idNodoPadre,
-                    'cantEqEnLinea': $(this)[0].cantEqEnLinea,
-                    'cantEqFueraLinea': $(this)[0].cantEqFueraLinea,
-                    'cantEqPendientes': $(this)[0].cantEqPendientes,
-                    'porcUpTimeEnLinea': $(this)[0].porcUpTimeEnLinea,
-                    'porcDwTimeFueraLinea': $(this)[0].porcDwTimeFueraLinea,
-                    'totalImpOk': $(this)[0].totalImpOk,
-                    'totalImpError': $(this)[0].totalImpError,
-                    'porcImpOK': $(this)[0].porcImpOK,
-                    'porcImpError': $(this)[0].porcImpError,
-                    'totalHOSTOK': $(this)[0].totalHOSTOK,
-                    'totalHOSTFalla': $(this)[0].totalHOSTFalla,
-                    'totalCamaraOK': $(this)[0].totalCamaraOK,
-                    'totalCamaraFalla': $(this)[0].totalCamaraFalla,
-                    'totalLBMOK': $(this)[0].totalLBMOK,
-                    'totalLBMFalla': $(this)[0].totalLBMFalla,
-                    'totalTouchOK': $(this)[0].totalTouchOK,
-                    'totalTouchFalla': $(this)[0].totalTouchFalla,
-                    'upTimePerifericos': $(this)[0].upTimePerifericos,
-                    'downTimePerifericos': $(this)[0].downTimePerifericos,
-                    'porcZonaConsTotales': $(this)[0].porcZonaConsTotales,
-                    'consImp': $(this)[0].consImp,
-                    'consUser': $(this)[0].consUser,
-                    'totalLlamadas': $(this)[0].totalLlamadas,
-                    'llamadasExitosas': $(this)[0].llamadasExitosas,
-                    'fallaIntVideo': $(this)[0].fallaIntVideo,
-                    'fallaSinVideo': $(this)[0].fallaSinVideo,
-                    'fallaConSIP': $(this)[0].fallaConSIP,
-                    'totalImpSinPapel': $(this)[0].totalImpSinPapel,
-                    'totalImpAtascada': $(this)[0].totalImpAtascada,
-                    'totalErrorPerifericos': $(this)[0].totalErrorPerifericos
+                    'cantFichas': $(this)[0].cantFichas,
+                    'idcliente': $(this)[0].idcliente,
+                    'idNegocio': $(this)[0].idNegocio,
+                    'idGrupo': $(this)[0].idGrupo,
+                    'idNodoNivel': $(this)[0].idNodoNivel,
+                    'descNodoNivel': $(this)[0].descNodoNivel,
+                    'totalEqEnLinea': $(this)[0].totalEqEnLinea,
+                    'totalEqFueraLinea': $(this)[0].totalEqFueraLinea,
+                    'totalEqNoAplica': $(this)[0].totalEqNoAplica,
+                    'totalEqAplica': $(this)[0].totalEqAplica,
+                    'porcUpTime': $(this)[0].porcUpTime,
+                    'porcDWTime': $(this)[0].porcDWTime,
+                    'totalEqImpSinPapel': $(this)[0].totalEqImpSinPapel,
+                    'totalEqImpAtascada': $(this)[0].totalEqImpAtascada,
+                    'totalEqPerifericoErr': $(this)[0].totalEqPerifericoErr
                 }
                 resultado.push(item);
                 ///////}

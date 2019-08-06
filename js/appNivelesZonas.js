@@ -10,13 +10,20 @@ var _idNodoDetalle = "";
 var _countData = 0;
 var _tituloSeleccionado = "";
 var _idtipoequipo = "";
+var _idCliente = "";
+var _idNodoNivel = "";
+
 $(document).ready(function () {
     //getVariables();
     $("#myModal").modal('show');
-    _tituloSeleccionado = decodeURIComponent(escape($.get("desequipo")));
-    _idtipoequipo = $.get("equipo");
+    //_tituloSeleccionado = decodeURIComponent(escape($.get("desequipo")));
+    //_idtipoequipo = $.get("equipo");
+    //Variables nuevas para walmart
+    _idCliente = $.get("idCliente");
+    _idNodoNivel = $.get("idNodoNivel");
+
     $("#tituloprinc").html("DashBoard Status por Zona : " + _tituloSeleccionado);
-    EquipoClientes();
+    EquipoClientes(_idCliente,_idNodoNivel);
 });
 
 function Volver() {
@@ -40,14 +47,16 @@ function VerDetalleTerminales(seleccionado, idZonaSeleccionada) {
     window.location.href = "../ReporteDetalle/DetalleTerminalesInformes.html?" + filtroSeleccionado + "&" + idZonaSeleccionada;
 }
 
-function EquipoClientes() {
+function EquipoClientes(idCliente,idNodoNivel) {
+    debugger;
     try {
-        var datos = obtenerDatosDashboardEquiposClienteZona(IDCLIENTE, 0, 0, _idtipoequipo);
+        var datos = obtenerDatosDashboard(idCliente, idNodoNivel, 1, 0);
+        debugger;
         if (datos.length > 0) {
             var i = 0;
             $(datos).each(function (key, value) {
                 i = i + 1;
-                $("#ulPaginacion").append(creaHtml(i));
+                $("#ulPaginacion").append(creaHtml(i,value.idNodoNivel));
                 creaGraficoBarra(i, value.porcUpTime, value.porcDwTime);
 
                 $("#validzona_" + i).html(value.idZona);
@@ -114,7 +123,7 @@ function EquipoClientes() {
 
 }
 
-function creaHtml(i) {
+function OldcreaHtml(i) {
     // Nuevo estilo -------------------------------------------------
     var idNodoDetalle = 0;
     var div = '<div class="row contenedorCmr" >';
@@ -241,6 +250,98 @@ function creaHtml(i) {
     div += '</div>';
     return div;
 }
+
+function creaHtml(i, idNodoNivel) {
+    var cadena = "";
+    cadena += '<div id="valEquipoDescripcion_'+i+'" style="display:none"></div>';
+    cadena += '<div id="validTipoEquipo_' + i + '" style="display:none"></div>';
+    cadena += '<div class="row contenedorCmr">';
+    cadena += '<div class="header" id="titulo_' + i + '">Resumen General</div>';
+    cadena += '<div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 box-macro-total">';
+    cadena += '<div class="container_gauge_cont">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+    cadena += '<div id="container_gauge_' + i + '" class="container_gauge_style">';
+    cadena += '</div>';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="visibility:hidden; height:0px; width:0px;">';
+    cadena += '<div id="leyenda">';
+    cadena += '<ul><li>';
+    cadena += '<div style="background-color:#36ae57; width:20px; height:20px; border-radius: 50%; float:left; margin-top:14px; margin-left:10px;"></div>';
+    cadena += '<div id="dvTituloOperativos">Operativos</div>';
+    cadena += '</li><li><div id="dvTituloFallas"></div>No Operativos</li>';
+    cadena += '</ul>';
+    cadena += '</div>';
+    cadena += '</div>';
+    //cadena += '<div id="container_gauge_fallos">';
+    //cadena += '<div class="container_gauge_fallos1" id="container_gauge_fallos1_' + i + '">0%</div>';
+    //cadena += '<div class="container_gauge_fallos2" id="container_gauge_fallos2_' + i + '"></div>';
+    //cadena += '</div>';
+    cadena += '</div>';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-7 col-md-6 col-lg-8" id="dvDetalleTerminales">';
+    cadena += '<div class="row">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+    //cadena += '<h2 id="DB_titulo_principal" class="titulo-principal">Detalle Terminales</h2>';
+    cadena += '<div class="ver-detalle-boton">';
+    cadena += '<div></div>';
+    cadena += '<button id="btnVerDetalle_' + i + '" type="button" class="btn" onclick="javascript:verDetalle('+i+','+idNodoNivel+')">Ver detalle</button>';
+    cadena += '</div>';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+    cadena += '<div id="dvContentDetalleTerminales">';
+    cadena += '<div class="dvContentDetalleTerminales_item_l">';
+    cadena += '<span class="glyphicon glyphicon-ok"></span> Operativos';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdOperativosEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdOperativosPorcentaje"></div>';
+    cadena += '</div>';
+    cadena += '<div class="dvContentDetalleTerminales_item_r">';
+    cadena += '<span class="glyphicon glyphicon-phone-alt"></span> Sin Comunicación';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdSinComunicacionEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdSinComunicacionPorcentaje">';
+    cadena += '</div></div>';
+    cadena += '<div id="capaImpresora_' + i + '">';
+    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-time"></span> Impresora Atascada';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdImpIrre_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdImpIrre80MMPorcentaje"></div></div>';
+    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-duplicate"></span> Impresora sin Papel';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdImpSinPapel_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdImpSinPapelPorcentaje"></div>';
+    cadena += '</div>';
+    cadena += '</div>';//capaImpresora
+    cadena += '<div id="errorPeriferico_' + i + '">';
+    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-warning-sign"></span> Error Periféricos';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdErrorPerifericosEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdErrorPerifericosPorcentaje"></div></div>';
+    cadena += '</div>'
+    //cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-list-alt"></span> Total';
+    //cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEquipos_' + i + '"></div></div>';
+    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-user"></span> Terminales Pendientes Cliente';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEPPPDCL_' + i + '"></div></div>';
+    cadena += '</table></div></div></div></div>';
+    cadena += '<div class="">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 detalle_impresion_cont">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="detalle_contador_' + i + '"></div">';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 detalle_impresion_cont">';
+    cadena += '<div id="detalle_total">';
+    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminales(\'TOTAL\','+i+');">';
+    cadena += '<div class="detalleTotal_item_nombre">Total terminales: <div id="tdTotalTerminales_' + i + '"></div></div>';
+    cadena += '<div class="detalleTotal_item_icon"></div>';
+    cadena += '</div>';
+    cadena += '<div class="detalleTotal_separador"></div>';
+    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminales(\'OPERATIVOS\','+i+');">';
+    cadena += '<div class="detalleTotal_item_nombre">Operativos: <div id="lblEquiposOK_' + i + '"></div></div>';
+    cadena += '<div class="detalleTotal_item_icon"></div>';
+    cadena += '</div>';
+    cadena += '<div class="detalleTotal_separador"></div>';
+    cadena += '<div class="detalleTotal_item2" onclick="VerDetalleTerminales(\'FALLAS\','+i+');">';
+    cadena += '<div class="detalleTotal_item_nombre">En Fallo:  <div id="lblEquiposFalla_' + i + '"></div></div>';
+    cadena += '<div class="detalleTotal_item_icon2"></div>';
+    cadena += '</div>';
+    cadena += '</div></div></div></div>';
+    return cadena;
+}
+
 function creaGraficoBarra(i, Porcentaje_terminales, Porcentaje_fallas) {
     Highcharts.chart('container_' + i + '', {
         chart: {
