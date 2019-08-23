@@ -100,25 +100,26 @@ ul.u {list-style-type: none;}
 }
 
 .container_gauge_style{
-	left: 15px;
+	left: 0px;
 	position: absolute;
-	top: 8px;
+	top: 0px;
 	/* border: 1px grey solid; */
 	overflow: hidden;
-	height: 232px;
-	border-radius: 6px;
+	height: 250px;
+	width: 250px;
+	border-radius: 0px;
 }
 .highcharts-container {
-	position: relative !important; 
+	position: relative !important;
 	overflow: visible !important;
-	width: 59px !important;
-	height: 240px !important;
+	width: 250px !important;
+	height: 300px !important;
 	text-align: left !important;
 	line-height: normal !important;
 	z-index: 0 !important;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-	left: -78px !important;
-	top: -10px !important;
+	left: 0px !important;
+	top: 0px !important;
 }
 .container_gauge_cont{
 	overflow: hidden;
@@ -135,7 +136,7 @@ ul.u {list-style-type: none;}
 }
 .container_gauge_fallos1{
 	text-align: center;
-    font-size: 2.9vw;
+    font-size: 62px;
 }
 #container_gauge_fallos1{
 	text-align: center;
@@ -163,15 +164,39 @@ ul.u {list-style-type: none;}
 	margin-right:40px;
 }
 
-/*
+
 #dvDetalleTerminales{
  margin-bottom:15px; 
 }
-*/
+
 
 #dvContentDetalleTerminales{
 	background-color: white; 
 	font-weight: bold;
+}
+
+.dvContentDetalleTerminales_item_OP{
+	background: #eee;
+    float: left;
+    width: 49.5%;
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #8be874;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.dvContentDetalleTerminales_item_NOP{
+	background: #eee;
+    float: right;
+    width: 49.5%;
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #ff7373;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
 }
 
 .dvContentDetalleTerminales_item_l{
@@ -210,38 +235,31 @@ ul.u {list-style-type: none;}
 .detalleUso_item{
 	background: #ececec;
 	float: left;
-	width: 50%;
+	width: 33.3333%;
 	color: #777;
-    display:inline-block;
-    height:auto;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
-	font-size: 0.9vw;
+	font-size: 16px;
     margin-top:5px;
 }
 
 .detalleUso_item_nombre{
 	float: left;
-	width: auto;
-	text-indent: 5px;
-	height: 0px;
+	/*width: 80%;*/
+	text-indent: 10px;
 	line-height: 46px;
-	text-size-adjust: auto;
-	/* overflow: hidden; */
-	position: relative;
 }
 
 .detalleUso_item_valor{
 	float: right;
-	/*width: 3.5vw;*/
-    width: 2.5vw;
+	width: 70px;
 	background: #f5f5f5;
 	text-align: center;
 	line-height: 46px;
 	-webkit-border-radius: 0px 6px 6px 0px;
 	-moz-border-radius: 0px 6px 6px 0px;
-	border-radius: 0px 6px 6px 0px;
+    border-radius: 0px 6px 6px 0px;
 }
 
 .detalleUso_separador{
@@ -250,34 +268,24 @@ ul.u {list-style-type: none;}
 
 .detalleTotal_item{
 	background: #a7a7a7;
-	/*float: left;
-	width: 35%;*/
-    width: 90%;
+	float: left;
+	width: 35%;
 	color: #fff;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
-	font-size: 0.8vw;
+	font-size: 20px;
 	/*cursor: pointer;*/
-    padding-bottom:25px;
-    margin-bottom:5px;
-    margin-right:20px;
-    display:inline-block;
 }
 .detalleTotal_item:hover{
 	background: #777;
 }
 
 .detalleTotal_item_nombre{
-	/*float: left;
-	width: 80%;*/
-	text-indent: 5px;
-	/*line-height: 15px;*/
-	padding-top: 17px;
-	text-align: center;
-	vertical-align: middle;
-	text-size-adjust: auto;
-    font-size:1.0vw;
+	float: left;
+	width: 80%;
+	text-indent: 10px;
+	line-height: 54px;
 }
 .detalleTotal_item_nombre div{
 	float: right;
@@ -309,19 +317,14 @@ ul.u {list-style-type: none;}
 
 .detalleTotal_item2{
 	background: #ff5252;
-   /*float: left;
-	width: 35%;*/
-    width: 90%;
-	color: #fff;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	font-size: 0.8vw;
-	/*cursor: pointer;*/
-    padding-bottom:25px;
-    margin-bottom:5px;
-    margin-right:20px;
-    display:inline-block;
+    float: left;
+    width: 28%;
+    color: #fff;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    font-size: 20px;
+    /*cursor: pointer;*/
 }
 
 
@@ -357,9 +360,8 @@ ul.u {list-style-type: none;}
 
 .dvHeaderCmr{
 	margin-bottom: 25px;
-	background-color: #5f5f5f;
+	background-color: #b5b5b5;
 	color: white;
-	padding: 15px 0px 15px 0px;
 }
 .header{
 	font-family: "Arial";
@@ -368,7 +370,7 @@ ul.u {list-style-type: none;}
 	padding-left: 15px;
 	padding-top: 8px;
 	color: white;
-	background-color: #5f5f5f;
+	background-color: #b5b5b5;
 	height: 38px;
 	-webkit-border-top-left-radius: 6px;
 	-webkit-border-top-right-radius: 6px;
@@ -425,9 +427,6 @@ ul.u {list-style-type: none;}
 
 #dvDetalleTerminales{
 	width:66%;
-	padding: 0px;
-	/*height: 255px;*/
-    height:auto;
 }
 .box-macro-total{
 	width:34%;
@@ -466,9 +465,8 @@ ul.u {list-style-type: none;}
 	.detalleTotal_item_icon{
 	}
 	.detalleTotal_item2{
-		/*width: 28%;*/
-        width: 90%;
-		font-size: 0.7vw;
+		width: 28%;
+		font-size: 18px;
 	}
 	.detalleTotal_item_nombre2{
 		/*width: 80%;*/
@@ -501,13 +499,11 @@ ul.u {list-style-type: none;}
 		font-size: 12px;
 	}
 	.detalleTotal_item{
-		font-size: 14px;
+		font-size: 1.3vw;
 	}
 	.detalleTotal_item2{
-		/*width: 28%;
-		font-size: 0.7vw;*/
-        width: 90%;
-		font-size: 1.2vw;
+		width: 28%;
+		font-size: 1.1vw;
 	}
 	.detalleTotal_item_nombre2{
 		/*width: 80%;*/
@@ -550,24 +546,20 @@ ul.u {list-style-type: none;}
 @media (max-width: 1220px){
 	
 	#container_gauge_fallos{
-		left: 30px;
+		left: 50px;
 	}
 	#container_gauge_fallos1{
-		font-size: 36px;
+		font-size: 48px;
 	}
 	#container_gauge_fallos2{
-		font-size: 1.3vw;
-        width:60%;
-        margin:auto auto;
-	}
-	.detalleTotal_item{
-		/* font-size: 0.7vw; */
 		font-size: 12px;
 	}
-	.detalleTotal_item2{
-		/*width: 28%;*/
-        width: 90%;
+	.detalleTotal_item{
 		font-size: 1.2vw;
+	}
+	.detalleTotal_item2{
+		width: 28%;
+		font-size: 1.1vw;
 	}
 	.detalleTotal_item_nombre2{
 		/*width: 80%;*/
@@ -591,7 +583,7 @@ ul.u {list-style-type: none;}
 		font-size:14px
 	}
 	#dvContentDetalleTerminales{
-		font-size:14px;
+		font-size:11px;
 	}
 	.dvContentDetalleTerminales_item_l{
 
@@ -603,13 +595,13 @@ ul.u {list-style-type: none;}
 		width: 130px;
 	}
 	.detalleUso_item{
-		font-size: 0.9vw;
+		font-size: 14px;
 	}
 	#dvDetalleTerminales{
-		width:64%;
+		width:55%;
 	}
 	.box-macro-total{
-		width:36%;
+		width:45%;
 	}
 }
 
@@ -619,7 +611,6 @@ ul.u {list-style-type: none;}
 	}
 	#dvDetalleTerminales{
 		width:66%;
-        height:auto;
 	}
 	.box-macro-total{
 		width:34%;
@@ -633,16 +624,13 @@ ul.u {list-style-type: none;}
 
 @media (max-width: 1079px){
 	.detalleUso_item_valor {
-		width: auto;
+		width: 45px;
 		padding-left:5px;
 		padding-right:5px;
 		font-size:12px;
-		position: relative;
-		right: 0px;
-		top: 0px;
 	}
 	.detalleUso_item{
-		/* font-size: 12px; */
+		font-size: 12px;
 	}
 	.container_gauge_style{
 		/* left: -62px; */
@@ -673,30 +661,26 @@ ul.u {list-style-type: none;}
 	.container_gauge_style{
 		left: 15px;
 		position: absolute;
-		width: 59px;
+		width: 250px;
 		/* overflow: hidden; */
 		height: 230px;
 	}
 	#dvDetalleTerminales{
-		width:64%;
+		width:100%;
 		padding: 0px;
-		bottom: 0px;
-		position: relative;
-        height:auto;
 	}
 	.box-macro-total{
 		width:34%;
 	}
 	.contenedorCmr{
 		border: 1px solid #ddd;
-		width: 100%;
-		margin-left: 0px;
-		margin-right: 0px;
-		-webkit-border-radius: 6px;
-		-moz-border-radius: 6px;
-		border-radius: 6px;
-		padding: 0px;
-		height: 455px;
+	    width: 100%;
+	    margin-left: 0px;
+	    margin-right: 0px;
+	    -webkit-border-radius: 6px;
+	    -moz-border-radius: 6px;
+	    border-radius: 6px;
+	    padding: 0px;
 	}
 
 	.container-fluid {
@@ -708,25 +692,11 @@ ul.u {list-style-type: none;}
 
     
 	.detalleTotal_item{
-		/*font-size: 14px;
-        float:left;
-        width:30%;*/
-
-
-     background: #a7a7a7;
-    width: 90%;
-	color: #fff;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-    padding-bottom:25px;
-    margin-bottom:5px;
-    margin-right:20px;
-    display:inline-block;
+		font-size: 2.5vw;
 
 	}
 	.detalleTotal_item2{
-		font-size: 2.1vw;
+		font-size: 2.4vw;
 	}
     .detalleTotal_item_nombre{
         font-size:1.6vw;

@@ -6,22 +6,31 @@ Modificado por: Juan González
 ***********/
 var vars = "";
 var _numDias = 0;
-var _tituloSeleccionado = "";
 var _idNodoDetalle = "";
 var _countData = 0;
-var _tituloZona = "";
-var _idzona = 0;
+var _tituloSeleccionado = "";
 var _idtipoequipo = "";
+var _idCliente = "";
+var idCliente = "12"; //ID DE WALMART
+var _idNodoNivel = "";
+var _idGrupo = "";
+
+
 $(document).ready(function () {
     //getVariables();
     $("#myModal").modal('show');
-    _tituloSeleccionado = decodeURIComponent(escape($.get("dessucursal")));
-    _tituloZona = $.get("deszona");
-    _idzona = parseInt($.get("zona"));
-    _idtipoequipo = $.get("equipo");
-    
-    $("#tituloprinc").html("DashBoard Status por Sucursal :" + _tituloSeleccionado + "<br>Zona " + _tituloZona);
-    EquipoClientes();
+    //_tituloSeleccionado = decodeURIComponent(escape($.get("dessucursal")));
+    //_tituloZona = $.get("deszona");
+    //_idzona = parseInt($.get("zona"));
+    //_idtipoequipo = $.get("equipo");
+
+    _idNegocio = $.get("idNegocio");
+    _idCliente = $.get("idCliente");
+    _idGrupo = $.get("idGrupo");
+
+    //$("#tituloprinc").html("DashBoard Status por Sucursal :" + _tituloSeleccionado + "<br>Zona " + _tituloZona);
+    EquipoClientes(_idCliente,_idNegocio,_idGrupo);
+
     $(".holder").jPages({
         containerID: "ulPaginacion",
         perPage: 6,
@@ -52,8 +61,9 @@ function VerDetalleTerminales(seleccionado, idZonaSeleccionada, idSucursalSelecc
 }
 
 function EquipoClientes() {
+    debugger;    
     try {
-        var datos = obtenerDatosDashboardEquiposClienteZona(IDCLIENTE, 1, _idzona, _idtipoequipo);
+        var datos = obtenerDatosDashboard(_idCliente, _idNegocio, 2, _idGrupo);
         if (datos.length > 0) {
             var i = 0;
             if (datos.length < 7) {//oculta paginación en caso de no necesitar
@@ -62,52 +72,35 @@ function EquipoClientes() {
                 $('.holder').css('display', 'block');
             }
             $(datos).each(function (key, value) {
-                
+                debugger;  
                 i = i + 1;
-                $("#ulPaginacion").append(creaHtml(i));
-                creaGraficoBarra(i, value.porcUpTime, value.porcDwTime);
+                $("#ulPaginacion").append(creaHtml(i,_idNodoNivel,value.idNodoNivel));
+                creaGraficoBarra(i, value.porcUpTime, value.porcDWTime);
+
+                $("#titulo_" + i).html("Resumen Sucursal " + value.descNodoNivel);
+                //$("#valEquipoDescripcion_" + i).html(value.desTipoEquipo);
+
+                $("#container_gauge_fallos1_" + i).html(value.porcDWTime + " %");
+                $("#container_gauge_fallos2_" + i).html("Terminales fuera de línea");
+                creaGraficoBarra(i, value.porcUpTime, value.porcDWTime);
                 
-                $("#validsucursal_" + i).html(value.idZona);
-                $("#valdescsucursal_" + i).html(value.descripcionZona);
-                $("#titulo_" + i).html(value.descripcionZona);
-                $("#container_gauge_fallos1_" + i).html(value.porcDwTime.toFixed(1) + ' %');
-
-                /*contadores*/
-                if (parseInt(value.totalContadores) > 0) {
-                    cadcont = "";
-                    $(value.listaDashboardTipoEquipoClienteContador.Lista).each(function (key2, value2) {
-                       // cadcont += '<div class="detalleUso_item">';
-                        //cadcont += '<div class="detalleUso_item_nombre">' + value2.nombContador + '</div>';
-                        //cadcont += '<div class="detalleUso_item_valor" id="liConsImpresion">' + value2.totalContador + '</div>';
-                        //cadcont += '</div>';
-                        //cadcont += '<div class="detalleUso_separador"></div>';
-                    });
-                    //$("#detalle_contador_" + i).html(cadcont);
-                }
-
-                /*valores para sumar los no operativos*/
-                if (value.aplicaImp == 1) {
-                    vAtr1 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'SinPapel');
-                    vAtr1 = (parseInt(vAtr1) == -99) ? 0 : parseInt(vAtr1);
-                    vAtr3 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'Irrecuperable');
-                    vAtr3 = (parseInt(vAtr3) == -99) ? 0 : parseInt(vAtr3);
-                    vAtr4 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'TapaAbierta');
-                    vAtr4 = (parseInt(vAtr4) == -99) ? 0 : parseInt(vAtr4);
-                } else {
-                    vAtr1 = 0;
-                    vAtr3 = 0;
-                    vAtr4 = 0;
-                }
-
-                vAtr2 = parseInt(value.cantEqFueraLinea);
-                vAtr5 = (parseInt(value.totalPerifericoError) == -99) ? 0 : parseInt(value.totalPerifericoError);
-                var sumaNoOperativo = parseInt(vAtr1 + vAtr2 + vAtr3 + vAtr4 + vAtr5);
-                //var totalOperativos = parseInt(value.totalEq) - parseInt(sumaNoOperativo);
-                /*TOTALES*/
-                $("#detalleTotal_item_nombre_terminales_" + i).html("Total terminales:" + value.totalEq);
-                $("#detalleTotal_item_nombre_operativo_" + i).html("En Línea:" + value.cantEqEnLinea);
                 
-                $("#detalleTotal_item_nombre_totalfallas_" + i).html("En Fallo: " + sumaNoOperativo);
+                
+                var sumaNoOperativo = parseInt(value.totalEqFueraLinea) + parseInt(value.totalEqImpAtascada) + parseInt(value.totalEqImpSinPapel) + parseInt(value.totalEqPerifericoErr);
+                var totalOperativos = parseInt(value.totalEqEnLinea) + parseInt(sumaNoOperativo);
+
+                $("#tdPorOperativosEquipos_" + i).html(value.porcUpTime+"%"); //% Operativos
+                $("#tdPorNoOperativosEquipos_" + i).html(value.porcDWTime+"%"); //% No Operativos
+                $("#tdOperativosEquipos_" + i).html(value.totalEqEnLinea); //Operativos
+                $("#tdSinComunicacionEquipos_" + i).html(value.totalEqFueraLinea); //Sin Comunicación                   
+                $("#tdImpSinPapel_" + i).html(value.totalEqImpSinPapel); // Impresora sin papel
+                $("#tdImpIrre_" + i).html(value.totalEqImpAtascada); // Impresora Atascada
+                $("#tdErrorPerifericosEquipos_" + i).html(value.totalEqPerifericoErr); //Error Periféricos
+                $("#tdTotalEquipos_" + i).html(totalOperativos); //Total
+                $("#tdTotalEPPPDCL_" + i).html(value.totalEqNoAplica); //Terminales Pendientes Cliente 
+                $("#tdTotalTerminales_" + i).html(totalOperativos); //Total Terminales
+                $("#lblEquiposOK_" + i).html(value.totalEqEnLinea);//Operativos
+                $("#lblEquiposFalla_" + i).html(sumaNoOperativo);//No Operativo
                 
             });
         }
@@ -118,7 +111,7 @@ function EquipoClientes() {
 
 }
 
-function creaHtml(i) {
+function Old_creaHtml(i) {
     // Nuevo estilo -------------------------------------------------
     var idNodoDetalle = 0;
 
@@ -219,12 +212,121 @@ function creaHtml(i) {
     div += '</div>';
     return div;
 }
-function creaGraficoBarra(i, Porcentaje_terminales, Porcentaje_fallas) {
-    Highcharts.chart('container_' + i + '', {
+
+function creaHtml(i, idNodoNivel, idGrupo) {
+    var cadena = "";
+    cadena += '<div id="valEquipoDescripcion_'+i+'" style="display:none"></div>';
+    cadena += '<div id="validTipoEquipo_' + i + '" style="display:none"></div>';
+    cadena += '<div class="row contenedorCmr">';
+    cadena += '<div class="header" id="titulo_' + i + '">Resumen General</div>';
+    cadena += '<div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 box-macro-total">';
+    cadena += '<div class="container_gauge_cont">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+    cadena += '<div id="container_gauge_' + i + '" class="container_gauge_style">';
+    cadena += '</div>';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="visibility:hidden; height:0px; width:0px;">';
+    cadena += '<div id="leyenda">';
+    cadena += '<ul><li>';
+    cadena += '<div style="background-color:#36ae57; width:20px; height:20px; border-radius: 50%; float:left; margin-top:14px; margin-left:10px;"></div>';
+    cadena += '<div id="dvTituloOperativos">Operativos</div>';
+    cadena += '</li><li><div id="dvTituloFallas"></div>No Operativos</li>';
+    cadena += '</ul>';
+    cadena += '</div>';
+    cadena += '</div>';
+    //cadena += '<div id="container_gauge_fallos">';
+    //cadena += '<div class="container_gauge_fallos1" id="container_gauge_fallos1_' + i + '">0%</div>';
+    //cadena += '<div class="container_gauge_fallos2" id="container_gauge_fallos2_' + i + '"></div>';
+    //cadena += '</div>';
+    cadena += '</div>';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-7 col-md-6 col-lg-8" id="dvDetalleTerminales">';
+    cadena += '<div class="row">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+    //cadena += '<h2 id="DB_titulo_principal" class="titulo-principal">Detalle Terminales</h2>';
+    cadena += '<div class="ver-detalle-boton">';
+    cadena += '<div></div>';
+    cadena += '<button id="btnVerDetalle_' + i + '" type="button" class="btn" onclick="javascript:verDetalle('+i+','+idNodoNivel+','+idGrupo+')">Ver detalle</button>';
+    cadena += '</div>';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
+    cadena += '<div id="dvContentDetalleTerminales">';
+    // % up
+    cadena += '<div class="dvContentDetalleTerminales_item_OP">';
+    cadena += '<span class="glyphicon glyphicon-upload"></span> Operativos ';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdPorOperativosEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdOperativosPorcentaje"></div>';
+    cadena += '</div>';
+    // % up
+    // % down
+    cadena += '<div class="dvContentDetalleTerminales_item_NOP">';
+    cadena += '<span class="glyphicon glyphicon-download"></span> No Operativos ';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdPorNoOperativosEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdSinComunicacionPorcentaje">';
+    cadena += '</div></div>';
+    // %down
+    cadena += '<div class="dvContentDetalleTerminales_item_l">';
+    cadena += '<span class="glyphicon glyphicon-ok"></span> En linea';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdOperativosEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdOperativosPorcentaje"></div>';
+    cadena += '</div>';
+    cadena += '<div class="dvContentDetalleTerminales_item_r">';
+    cadena += '<span class="glyphicon glyphicon-phone-alt"></span> Sin Comunicación';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdSinComunicacionEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdSinComunicacionPorcentaje">';
+    cadena += '</div></div>';
+    cadena += '<div id="capaImpresora_' + i + '">';
+    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-time"></span> Impresora Atascada';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdImpIrre_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdImpIrre80MMPorcentaje"></div></div>';
+    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-duplicate"></span> Impresora sin Papel';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdImpSinPapel_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdImpSinPapelPorcentaje"></div>';
+    cadena += '</div>';
+    cadena += '</div>';//capaImpresora
+    cadena += '<div id="errorPeriferico_' + i + '">';
+    cadena += '<div class="dvContentDetalleTerminales_item_l"><span class="glyphicon glyphicon-warning-sign"></span> Error Periféricos';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdErrorPerifericosEquipos_' + i + '"></div>';
+    cadena += '<div class="dvDetalleTerminales_datoPor" id="tdErrorPerifericosPorcentaje"></div></div>';
+    cadena += '</div>'
+    //cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-list-alt"></span> Total';
+    //cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEquipos_' + i + '"></div></div>';
+    cadena += '<div class="dvContentDetalleTerminales_item_r"><span class="glyphicon glyphicon-user"></span> Pendientes Cliente';
+    cadena += '<div class="dvDetalleTerminales_datoNum" id="tdTotalEPPPDCL_' + i + '"></div></div>';
+    cadena += '</table></div></div></div></div>';
+    cadena += '<div class="">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 detalle_impresion_cont">';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="detalle_contador_' + i + '"></div">';
+    cadena += '</div>';
+    cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 detalle_impresion_cont">';
+    cadena += '<div id="detalle_total">';
+    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminales(\'TOTAL\','+i+');">';
+    cadena += '<div class="detalleTotal_item_nombre">Total:<div id="tdTotalTerminales_' + i + '"></div></div>';
+    cadena += '<div class="detalleTotal_item_icon"></div>';
+    cadena += '</div>';
+    cadena += '<div class="detalleTotal_separador"></div>';
+    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminales(\'OPERATIVOS\','+i+');">';
+    cadena += '<div class="detalleTotal_item_nombre">Operativos: <div id="lblEquiposOK_' + i + '"></div></div>';
+    cadena += '<div class="detalleTotal_item_icon"></div>';
+    cadena += '</div>';
+    cadena += '<div class="detalleTotal_separador"></div>';
+    cadena += '<div class="detalleTotal_item2" onclick="VerDetalleTerminales(\'FALLAS\','+i+');">';
+    cadena += '<div class="detalleTotal_item_nombre">En Fallo:  <div id="lblEquiposFalla_' + i + '"></div></div>';
+    cadena += '<div class="detalleTotal_item_icon2"></div>';
+    cadena += '</div>';
+    cadena += '</div></div></div></div>';
+    return cadena;
+}
+
+function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
+    Highcharts.chart('container_gauge_' + i, {
         chart: {
-            type: 'column',
-            height: 255,
-            width: 180
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            height: 250,
+            width: 170
         },
         credits: {
             enabled: false
@@ -232,6 +334,7 @@ function creaGraficoBarra(i, Porcentaje_terminales, Porcentaje_fallas) {
         title: {
             text: ''
         },
+        colors:['#2ebf44','#e34f4f'],
         xAxis: {
             categories: [''],
             lineColor: '#fff',
@@ -250,32 +353,40 @@ function creaGraficoBarra(i, Porcentaje_terminales, Porcentaje_fallas) {
                 }
             }
         },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}"></span><b>{point.percentage:.0f}%</b><br/>',
+            shared: false,
+            enabled: true
+        },
         plotOptions: {
-            column: {
-                stacking: 'percent',
-                stickyTracking: false
+            pie: {
+                allowPointSelect: false,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
             }
         },
         legend: {
             enabled: false
         },
-        tooltip: {
-            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
-            shared: true,
-            enabled: false
-        },
         series: [{
-            name: 'Operativos',
-            color: '#92d283',
-            data: [Porcentaje_terminales]
-        }, {
-            name: 'Falla',
-            color: '#ea5942',
-            data: [Porcentaje_fallas]
+            name: 'Estado',
+            colorByPoint: true,
+            data: [{
+                name: 'Operativo',
+                y: porcentajeEquiposUpTime,
+                sliced: false,
+                selected: false
+            }, {
+                name: 'No Operativo',
+                y: porcentajeFallaGrafico
+            }]
         }]
     },
-            function callback() {
-            });
+    function callback() {
+    });
 }
 function verDetalle(i) {
     $("#myModal").modal('show');

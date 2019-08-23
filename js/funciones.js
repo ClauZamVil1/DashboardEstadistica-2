@@ -265,6 +265,10 @@ function ObtenerDetalleEquiposXSucursal(idCliente, idSucursal) {
 function GetOrganizaciones(idCliente, nivel, idZonaRetail, idSucursal, estGral, idTipoEquipo) {
     resultado = null;
 
+    if(idTipoEquipo==""){
+        idTipoEquipo="T";
+    }
+
     var parametro = RetornaAJAX(url + "obtenerDatos.svc", "GetOrganizaciones", '{"idCliente": ' + idCliente + ', "nivel": ' + nivel + ', "idZonaRetail": ' + idZonaRetail + ', "idSucursal": ' + idSucursal + ', "estGral": ' + estGral + ',"idTipoEquipo":"' + idTipoEquipo + '"}', null);
     $.when($.ajax(parametro)).done(function (result) {
         if (result.GetOrganizacionesResult != null) {
@@ -286,6 +290,10 @@ function GetOrganizaciones(idCliente, nivel, idZonaRetail, idSucursal, estGral, 
 function GetZonasRetail(idCliente, nivel, idZonaRetail, idSucursal, estGral, idFormato, idTipoEquipo) {
     resultado = null;
 
+    if(idTipoEquipo==""){
+        idTipoEquipo="T";
+    }
+
     var parametro = RetornaAJAX(url + "obtenerDatos.svc", "GetZonasRetail", '{"idCliente": ' + idCliente + ', "nivel": ' + nivel + ', "idZonaRetail": ' + idZonaRetail + ', "idSucursal": ' + idSucursal + ', "estGral": ' + estGral + ', "idFormato": ' + idFormato + ',"idTipoEquipo":"' + idTipoEquipo + '"}', null);
     $.when($.ajax(parametro)).done(function (result) {
         if (result.GetZonasRetailResult != null) {
@@ -306,6 +314,10 @@ function GetZonasRetail(idCliente, nivel, idZonaRetail, idSucursal, estGral, idF
 
 function GetSucursales(idCliente, nivel, idFormato, idZonaRetail, idSucursal, estGral,idTipoEquipo) {
     resultado = null;
+
+    if(idTipoEquipo==""){
+        idTipoEquipo="T";
+    }
 
     var parametro = RetornaAJAX(url + "obtenerDatos.svc", "GetSucursales", '{"idCliente": ' + idCliente + ', "nivel": ' + nivel + ', "idFormato": ' + idFormato + ', "idZonaRetail": ' + idZonaRetail + ', "idSucursal": ' + idSucursal + ', "estGral": ' + estGral + ',"idTipoEquipo":"' + idTipoEquipo + '"}', null);
     $.when($.ajax(parametro)).done(function (result) {
@@ -370,7 +382,11 @@ function GetCondicionMonitoreo(idCliente, estGral, idFormato, idZonaRetail, idSu
 }
 
 function GetDetalleEquiposXNivel(idCliente, idZonaRetail, idOrganizacion, idSucursal, idEstadoTerminal, idTipoTerminal, idCondicionMonitoreo) {
+    debugger;
     resultado = null;
+    if(idTipoTerminal==""){
+        idTipoTerminal="TODOS";
+    }
     var parametro = RetornaAJAX(url + "obtenerDatos.svc", "GetDetalleEquiposXNivel", '{"idCliente": ' + idCliente + ', "idZonaRetail": ' + idZonaRetail + ', "idOrganizacion": ' + idOrganizacion + ', "idSucursal": ' + idSucursal + ', "idEstadoTerminal": ' + idEstadoTerminal + ', "idTipoTerminal": "' + idTipoTerminal + '", "idCondicionMonitoreo": ' + idCondicionMonitoreo + '}', null);
     $.when($.ajax(parametro)).done(function (result) {
         if (result.GetDetalleEquiposXNivelResult != null) {

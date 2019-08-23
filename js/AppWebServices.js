@@ -11,7 +11,7 @@ var _tituloSeleccionado = "";
 $(document).ready(function () {
     //$("#myModal").modal('show');
     _tituloSeleccionado = "Monitoreo en Línea - Hoy";
-    EquipoClientes();
+    //EquipoClientes();
 });
 
 function mostrarMensaje(tipo, mensaje) {

@@ -18,17 +18,22 @@ var _idEquipoSeleccionado = 0;
 
 $(document).ready(function () {
     /**/
+    debugger;
     $("#myModal").modal('show');
     _equipo = $.get("equipo");
-    _desequipo = $.get("desequipo");
+    _idOrganizacion = $.get("formato");
+    _idFormato = $.get("formato");
     _idSucursal = $.get("sucursal");
     _idZonaRetail = $.get("zona");
     _idEstadoTerminal = $.get("seleccionado");
-    _tituloSeleccionado = decodeURIComponent(escape($.get("titulo")));
-    $("#tituloprinc").html("DashBoard Detalle Terminales :" + _tituloSeleccionado);
+    //_idOrganizacion=_idFormato;
+    //_tituloSeleccionado = decodeURIComponent(escape($.get("titulo")));
+    //$("#tituloprinc").html("DashBoard Detalle Terminales :" + _tituloSeleccionado);
     if (_idSucursal == null) { _idSucursal = 0; }
     if (_idZonaRetail == null) { _idZonaRetail = 0; }
-    if (_tituloSeleccionado == null) { _tituloSeleccionado = ""; }
+    if (_idEstadoTerminal == null) { _idEstadoTerminal = 0; }
+    if (_idFormato == null) { _idFormato = 0; }
+    //if (_tituloSeleccionado == null) { _tituloSeleccionado = ""; }
     /**/
 
     $('#btnVerDetalle').css("display", "none");
@@ -38,11 +43,14 @@ $(document).ready(function () {
 
     //selecciona combos dependiendo preferencias recibidas por parametros
     SelectedEstadoTerminal(_idEstadoTerminal);
+    SelectedEstadoFormato(_idFormato);
     SelectedEstadoZona(_idZonaRetail);
     SelectedEstadoSucursal(_idSucursal);
+    
 
    //eventos de cambio en selección de algun combo
     $("#stEstadoTerminal").change(function () {
+        debugger;
         var idEstadoTerminalSelect = $(this).val();
         //if(idEstadoTerminalSelect == "0"){
             //_idZonaRetail = 0;
@@ -64,6 +72,7 @@ $(document).ready(function () {
     });
 
    $( "#stFormato" ).change(function() {
+       debugger;
         var idFormatoSelect = $(this).val();
         //debugger;
         _idZonaRetail = 0;
@@ -170,6 +179,16 @@ function SelectedEstadoSucursal(sucursalSeleccionada){
         for(var i=0;i<optionSucursal.length;i++){
             if(optionSucursal[i].value == sucursalSeleccionada){
                 $('#stSucursal option:eq(' + i + ')').prop('selected', true);
+                return;
+            }
+        }
+    }
+
+function SelectedEstadoFormato(formatoSeleccionada){
+        var optionFormato = $('#stFormato option');
+        for(var i=0;i<optionFormato.length;i++){
+            if(optionFormato[i].value == formatoSeleccionada){
+                $('#stFormato option:eq(' + i + ')').prop('selected', true);
                 return;
             }
         }
