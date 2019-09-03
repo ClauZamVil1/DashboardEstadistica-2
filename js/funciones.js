@@ -154,6 +154,43 @@ function RetornaAJAX(iPagina, iFuncion, iDATA, iEjecucion) {
     return options;
 }
 
+//funcion que consulta datos de backend con servicio
+function obtenerDatosBackendWalmart(idCliente, nivel, idGrupo) {
+    debugger;
+    resultado = null;
+    var parametro = RetornaAJAX(url + "obtenerDatos.svc", "obtenerInformacionBackendWalmart", '{"idCliente": ' + idCliente + ',"nivel": ' + nivel + ',"idGrupo": ' + idGrupo + '}', null);
+    $.when($.ajax(parametro)).done(function (result) {
+        debugger;
+        if (result.obtenerInformacionBackendWalmartResult != null) {
+
+            oJSON = result.obtenerInformacionBackendWalmartResult;
+            var item;
+            resultado = [];
+            $(oJSON).each(function () {
+                ///////if($(this)[0].cantEqEnLinea > 0){//está dejando afuera los equipos que no se encuentran en linea. Hay que validar por tamaño Length
+                item = {
+                    'cantFichas': $(this)[0].cantFichas,
+                    'idNodoNivel': $(this)[0].idNodoNivel,
+                    'descNodoNivel': $(this)[0].descNodoNivel,
+                    'estadoGral': $(this)[0].estadoGral,
+                    'totalAcumulado': $(this)[0].totalAcumulado,
+                    'totalErrAcumulado': $(this)[0].totalErrAcumulado,
+                    'totalUltHora': $(this)[0].totalUltHora,
+                    'totalErrUltHora': $(this)[0].totalErrUltHora,
+                    'totalUltCincoMin': $(this)[0].totalUltCincoMin,
+                    'totalErrUltCincoMin': $(this)[0].totalErrUltCincoMin,
+                    'totalClienteUlt5Min': $(this)[0].totalClienteUlt5Min,
+                    'clientesXMinuto': $(this)[0].clientesXMinuto,
+                    'transaccionesXMinuto': $(this)[0].transaccionesXMinuto
+                }
+                resultado.push(item);
+                ///////}
+            });
+        }
+    });
+    return resultado;
+}
+
 function obtenerDatosDashboard(idCliente, idNegocio, nivel, idGrupo) {
     debugger;
     resultado = null;
