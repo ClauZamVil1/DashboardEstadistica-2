@@ -1,9 +1,11 @@
 /**********
-Versión: 2.1.1
-Fecha Modificación: 18-10-2017
-Creado Por: Juan González
-Modificado por: Juan González
+Versión: 1.0.0
+Fecha Modificación: 03-09-2018
+Creado Por: Sebastian Garcés
+Modificado por: Sebastian Garcés
 ***********/
+
+
 var _numDias = 0;
 var _tituloSeleccionado = "";
 var maximosClientesXMinuto = 0;
@@ -107,21 +109,8 @@ function cargaNivelBackend(){
                     datosGraficoUlt5Min.push([splitNombre[2],value.totalUltCincoMin,value.idNodoNivel]);
                 }
 
-                //creaGraficoClientes(2,value.clientesXMinuto);
-                //creaGraficoTransacciones(3,value.transaccionesXMinuto);
                 
-            });
-
-            /*var totalTotAcumu = 0;
-            for(var i=0;i<datosGraficoTotAcumu.length;i++){
-                totalAcumulado+=parseInt(datosGraficoTotAcumu[1][i]);
-            }
-
-            for(var i=0;i<datosGraficoTotAcumu.length;i++){
-                dataTotAcumu.push([datosGraficoTotAcumu[0][i],(((parseInt(datosGraficoTotAcumu[1][i])*100)/parseInt(totalTotAcumu))]);
-            }*/
-
-            
+            });            
             creaGraficoTotAcumu(1);
             creaGraficoTotUltHora(2);
             creaGraficoTotUlt5Min(3);
@@ -196,103 +185,14 @@ function actualizaNivelBackend(){
                             datosGraficoUlt5Min.push([splitNombre[2],value.totalUltCincoMin,value.idNodoNivel]);
                         }
 
-                        //creaGraficoClientes(2,value.clientesXMinuto);
-                        //creaGraficoTransacciones(3,value.transaccionesXMinuto);
                         
                     });
 
-                    /*var totalTotAcumu = 0;
-                    for(var i=0;i<datosGraficoTotAcumu.length;i++){
-                        totalAcumulado+=parseInt(datosGraficoTotAcumu[1][i]);
-                    }
-
-                    for(var i=0;i<datosGraficoTotAcumu.length;i++){
-                        dataTotAcumu.push([datosGraficoTotAcumu[0][i],(((parseInt(datosGraficoTotAcumu[1][i])*100)/parseInt(totalTotAcumu))]);
-                    }*/
-
-                    
                     creaGraficoTotAcumu(1);
                     creaGraficoTotUltHora(2);
                     creaGraficoTotUlt5Min(3);
         }
 
-    } catch (e) {
-
-    }
-
-}
-
-function EquipoClientes() {
-    debugger;
-    try {
-        var datos = obtenerDatosDashboardEquiposCliente(IDCLIENTE, 0, 0, 'todos');
-        if (datos.length > 0) {
-            $(datos).each(function (key, value) {
-                if (value.desTipoEquipo != "Totem-T22 Paleta Inalámbrico Sin Modem Datos") {
-                    i = key + 1;
-                    $("#contendorDash").append(creaHtml(i));
-                    $("#validTipoEquipo_" + i).html(value.idTipoEquipo);
-                    $("#titulo_" + i).html("Resumen General " + value.desTipoEquipo);
-                    $("#valEquipoDescripcion_" + i).html(value.desTipoEquipo);
-
-                    $("#container_gauge_fallos1_" + i).html(value.porcDwTime + " %");
-                    $("#container_gauge_fallos2_" + i).html("Terminales fuera de línea");
-                    creaGraficoBarra(i, value.porcUpTime, value.porcDwTime);
-                    /*Escribe contadores*/
-                    if (parseInt(value.totalContadores) > 0) {
-                        cadcont = "";
-                        $(value.listaDashboardTipoEquipoClienteContador.Lista).each(function (key2, value2) {
-                            //cadcont += '<div class="detalleUso_item">';
-                            //cadcont += '<div class="detalleUso_item_nombre">' + value2.nombContador + '</div>';
-                            //cadcont += '<div class="detalleUso_item_valor" id="liConsImpresion">' + value2.totalContador + '</div>';
-                            //cadcont += '</div>';
-                            //cadcont += '<div class="detalleUso_separador"></div>';
-                        });
-                        //$("#detalle_contador_" + i).html(cadcont);
-                    }
-                    /*valores para sumar los no operativos*/
-                    if (value.aplicaImp == 1) {
-                        vAtr1 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'SinPapel');
-                        vAtr1 = (parseInt(vAtr1) == -99) ? 0 : parseInt(vAtr1);
-                        vAtr3 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'Irrecuperable');
-                        vAtr3 = (parseInt(vAtr3) == -99) ? 0 : parseInt(vAtr3);
-                        vAtr4 = ObtenerValorAtributo(value.listaComponente.Lista, 'IMP', 'TapaAbierta');
-                        vAtr4 = (parseInt(vAtr4) == -99) ? 0 : parseInt(vAtr4);
-                    } else {
-                        vAtr1 = 0;
-                        vAtr3 = 0;
-                        vAtr4 = 0;
-                    }
-                    vAtr2 = parseInt(value.cantEqFueraLinea);
-                    vAtr5 = (parseInt(value.totalPerifericoError) == -99) ? 0 : parseInt(value.totalPerifericoError);
-                    var sumaNoOperativo = parseInt(vAtr1 + vAtr2 + vAtr3 + vAtr4 + vAtr5);
-                    var totalOperativos = parseInt(value.totalEq) - parseInt(sumaNoOperativo);
-
-                    $("#tdOperativosEquipos_" + i).html(totalOperativos); //Operativos
-                    $("#tdSinComunicacionEquipos_" + i).html(value.cantEqFueraLinea); //Sin Comunicación
-
-                    /*Aplica impresora*/
-                    if (value.aplicaImp == 0) { $("#capaImpresora_" + i).hide(); }
-                    if (value.totalPerifericoError == "-99") { $("#errorPeriferico_" + i).hide(); }
-
-                    if (value.aplicaImp != 0) {
-                        $("#tdImpSinPapel_" + i).html(vAtr1); // Impresora sin papel
-                        var sumaerre = vAtr3 + vAtr4;
-                        $("#tdImpIrre_" + i).html(sumaerre); // Impresora Atascada
-                    }
-                    
-
-                    $("#tdErrorPerifericosEquipos_" + i).html(value.totalPerifericoError); //Error Periféricos
-                    $("#tdTotalEquipos_" + i).html(value.totalEq); //Total
-                    $("#tdTotalEPPPDCL_" + i).html(value.cantEqFueraLineaPend); //Terminales Pendientes Cliente 
-                    $("#tdTotalTerminales_" + i).html(value.totalEq); //Total Terminales
-                    $("#lblEquiposOK_" + i).html(totalOperativos);//Operativos
-                    $("#lblEquiposFalla_" + i).html(sumaNoOperativo);//No Operativo
-                    
-                }
-            });
-        }
-        $("#myModal").modal('hide');
     } catch (e) {
 
     }
@@ -360,9 +260,6 @@ function creaHtml(i) {
     cadena += '</div>';
     cadena += '</div>';
 
-
-
-   
     return cadena;
 }
 
@@ -383,78 +280,6 @@ function creaHtmlGrafico(i) {
 
     return cadena;
 }
-
-function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
-    Highcharts.chart('container_gauge_' + i, {
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie',
-            height: 250,
-            width: 250
-        },
-        credits: {
-            enabled: true
-        },
-        title: {
-            text: ''
-        },
-        colors:['green','red'],
-        xAxis: {
-            categories: [''],
-            lineColor: '#fff',
-            tickWidth: 0,
-        },
-        yAxis: {
-            min: 0,
-            max: 100,
-            gridLineColor: '#fff',
-            title: {
-                text: ''
-            },
-            labels: {
-                style: {
-                    color: '#fff'
-                }
-            }
-        },
-        tooltip: {
-            pointFormat: '<span style="color:{series.color}"></span><b>{point.percentage:.0f}%</b><br/>',
-            shared: true,
-            enabled: false
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        series: [{
-            name: 'Estado',
-            colorByPoint: true,
-            data: [{
-                name: 'En linea',
-                y: porcentajeEquiposUpTime,
-                sliced: true,
-                selected: true
-            }, {
-                name: 'Falla',
-                y: porcentajeFallaGrafico
-            }]
-        }]
-    },
-    function callback() {
-    });
-}
-
 
 function creaGraficoTotAcumu(i) {
 
@@ -632,23 +457,6 @@ function verDetalle(servidor,nombre) {
     $("#myModal").modal('show');
     setTimeout(function () { window.location.href = "../WebServices/indexDetalleWebServices.htm?idServer=" + servidor +"&nombreServer=" + nombre; }, 1000);
 }
-function VerDetalleTerminales(seleccionado,i) {
-    var filtroSeleccionado = 0;
-    var idtipoequipo = $("#validTipoEquipo_" + i).html();
-    var equidescrip = $("#valEquipoDescripcion_" + i).html();
-    if (seleccionado == "TOTAL") {
-        filtroSeleccionado = 0;
-    }
-    else if (seleccionado == "OPERATIVOS") {
-        filtroSeleccionado = 1;
-    }
-    else if (seleccionado == "FALLAS") {
-        filtroSeleccionado = 3;
-    }
-    vars = "equipo=" + idtipoequipo + '&desequipo=' + equidescrip + '&seleccionado=' + filtroSeleccionado + '&titulo=' + equidescrip ;
-    window.location.href = "../ReporteDetalle/DetalleTerminalesInformes.html?" + vars;
-}
-
 
 setInterval(function(){
     $("#myModal").modal('show');
