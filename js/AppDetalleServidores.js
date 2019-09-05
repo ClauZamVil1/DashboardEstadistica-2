@@ -82,7 +82,7 @@ function cargaNivelBackend(){
 
                     datosGraficoTotAcumu.push([splitNombre[2],value.totalAcumulado,value.idNodoNivel]);
                     datosGraficoUltHora.push([splitNombre[2],value.totalUltHora,value.idNodoNivel]);
-                    datosGraficoUlt5Min.push([splitNombre[2],value.totalUltCincoMin],value.idNodoNivel);
+                    datosGraficoUlt5Min.push([splitNombre[2],value.totalUltCincoMin,value.idNodoNivel]);
                 }else if(_servidor.indexOf("Leir")!==-1 && value.descNodoNivel.indexOf("Leir")!==-1){
                     i++;
                     $("#contendorDash"+i).append(creaHtml(i));
