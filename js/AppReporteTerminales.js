@@ -38,7 +38,7 @@ $(document).ready(function () {
 
     $('#btnVerDetalle').css("display", "none");
     
-    CargaCombos(_nivel, _idFormato, _idZonaRetail, _idSucursal, _idEstadoTerminal, _idCondicionMonitoreo, _idTipoTerminal);
+    CargaCombos(_nivel, _idFormato, _idZonaRetail, "0", _idEstadoTerminal, _idCondicionMonitoreo, _idTipoTerminal);
     CargaListadoGeneral(_idZonaRetail, _idOrganizacion, _idSucursal, _idEstadoTerminal, _equipo, _idCondicionMonitoreo);
 
     //selecciona combos dependiendo preferencias recibidas por parametros
@@ -299,7 +299,7 @@ function CargaListadoGeneral(idZonaRetail, idOrganizacion, idSucursal, idEstadoT
     {
         HTMLDiv += '<tr onclick="verDetalles(event)" class="detalle_unsel">';
         HTMLDiv +=      '<td>' + datos[i].detOrganizacion + '</td>';
-        HTMLDiv +=      '<td>' + datos[i].detZonaComercial + '</td>';
+        HTMLDiv +=      '<td>' + datos[i].detRegion + '</td>';
         HTMLDiv +=      '<td>' + datos[i].detSucursal + '</td>';
         HTMLDiv +=      '<td>' + datos[i].idEquipo + '</td>';
         HTMLDiv +=      '<td>' + datos[i].detTipoEquipo + '</td>';

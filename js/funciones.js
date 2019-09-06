@@ -434,6 +434,7 @@ function GetDetalleEquiposXNivel(idCliente, idZonaRetail, idOrganizacion, idSucu
                 item = {
                     'detOrganizacion': $(this)[0].detOrganizacion,
                     'detZonaComercial': $(this)[0].detZonaComercial,
+                    'detRegion': $(this)[0].detRegion,
                     'detSucursal': $(this)[0].detSucursal,
                     'idEquipo': $(this)[0].idEquipo,
                     'detTipoEquipo': $(this)[0].detTipoEquipo,

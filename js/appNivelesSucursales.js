@@ -74,7 +74,7 @@ function EquipoClientes() {
             $(datos).each(function (key, value) {
                 debugger;  
                 i = i + 1;
-                $("#ulPaginacion").append(creaHtml(i,_idNodoNivel,value.idNodoNivel));
+                $("#ulPaginacion").append(creaHtml(i,_idNodoNivel,value.idNodoNivel,value.idGrupo));
                 creaGraficoBarra(i, value.porcUpTime, value.porcDWTime);
 
                 $("#titulo_" + i).html("Resumen Sucursal " + value.descNodoNivel);
@@ -246,7 +246,7 @@ function creaHtml(i, idNodoNivel, idGrupo) {
     //cadena += '<h2 id="DB_titulo_principal" class="titulo-principal">Detalle Terminales</h2>';
     cadena += '<div class="ver-detalle-boton">';
     cadena += '<div></div>';
-    cadena += '<button id="btnVerDetalle_' + i + '" type="button" class="btn" onclick="javascript:verDetalle('+i+','+idNodoNivel+','+idGrupo+')">Ver detalle</button>';
+    //cadena += '<button id="btnVerDetalle_' + i + '" type="button" class="btn" onclick="javascript:verDetalle('+i+','+idNodoNivel+','+idGrupo+')">Ver detalle</button>';
     cadena += '</div>';
     cadena += '</div>';
     cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
@@ -300,17 +300,17 @@ function creaHtml(i, idNodoNivel, idGrupo) {
     cadena += '</div>';
     cadena += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 detalle_impresion_cont">';
     cadena += '<div id="detalle_total">';
-    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminales(\'TOTAL\','+i+');">';
+    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminal(\'TOTAL\','+i+','+idGrupo+');">';
     cadena += '<div class="detalleTotal_item_nombre">Total:<div id="tdTotalTerminales_' + i + '"></div></div>';
     cadena += '<div class="detalleTotal_item_icon"></div>';
     cadena += '</div>';
     cadena += '<div class="detalleTotal_separador"></div>';
-    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminales(\'OPERATIVOS\','+i+');">';
+    cadena += '<div class="detalleTotal_item" onclick="VerDetalleTerminal(\'OPERATIVOS\','+i+','+idGrupo+');">';
     cadena += '<div class="detalleTotal_item_nombre">Operativos: <div id="lblEquiposOK_' + i + '"></div></div>';
     cadena += '<div class="detalleTotal_item_icon"></div>';
     cadena += '</div>';
     cadena += '<div class="detalleTotal_separador"></div>';
-    cadena += '<div class="detalleTotal_item2" onclick="VerDetalleTerminales(\'FALLAS\','+i+');">';
+    cadena += '<div class="detalleTotal_item2" onclick="VerDetalleTerminal(\'FALLAS\','+i+','+idGrupo+');">';
     cadena += '<div class="detalleTotal_item_nombre">En Fallo:  <div id="lblEquiposFalla_' + i + '"></div></div>';
     cadena += '<div class="detalleTotal_item_icon2"></div>';
     cadena += '</div>';
@@ -389,16 +389,17 @@ function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
     });
 }
 function verDetalle(i) {
+    debugger;
     $("#myModal").modal('show');
     var idsucursales = $("#validsucursal_" + i).html();
     var sucursaleldescrip = $("#valdescsucursal_" + i).html();
     vars = "sucursal=" + idsucursales + '&zona=' + _idzona + '&dessucursal=' + sucursaleldescrip;
     setTimeout(function () { window.location.href = "../Terminales/indexTerminales.htm?" + vars; }, 1000);
 }
-function VerDetalleTerminal(seleccionado, i) {
+function VerDetalleTerminal(seleccionado, i, idGrupo) {
+    debugger;
     var filtroSeleccionado = 0;
-    var idsucursales = $("#validsucursal_" + i).html();
-    var sucursaleldescrip = $("#valdescsucursal_" + i).html();
+    var idzona = idGrupo;
     if (seleccionado == "TOTAL") {
         filtroSeleccionado = 0;
     }
@@ -408,6 +409,6 @@ function VerDetalleTerminal(seleccionado, i) {
     else if (seleccionado == "FALLAS") {
         filtroSeleccionado = 3;
     }
-    vars = "sucursal=" + idsucursales + '&dessucursal=' + sucursaleldescrip + '&zona=' + _idzona + "&equipo=" + _idtipoequipo + '&seleccionado=' + filtroSeleccionado + '&titulo=' + _tituloSeleccionado +' - '+ _tituloZona +' <br> Equipo ' + sucursaleldescrip;;
+    vars = "sucursal=" + idzona + '&idCliente=' + _idCliente + "&equipo=" + _idtipoequipo + '&formato=' + _idNegocio + '&seleccionado=' + filtroSeleccionado ;
     window.location.href = "../ReporteDetalle/DetalleTerminalesInformes.html?" + vars;
 }

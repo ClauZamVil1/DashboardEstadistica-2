@@ -37,6 +37,7 @@ function Volver() {
 }
 
 function VerDetalleTerminales(seleccionado, idZonaSeleccionada) {
+    debugger;
     var filtroSeleccionado = 0;
 
     if (seleccionado == "TOTAL") {
