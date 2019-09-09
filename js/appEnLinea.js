@@ -69,6 +69,53 @@ function EquipoClientes() {
 
 }
 
+function actualizaEquipoClientes() {
+    debugger;
+    try {
+        var datos = obtenerDatosDashboard(IDCLIENTE, 0, 0, 0);
+        if (datos.length > 0) {
+            $(datos).each(function (key, value) {
+                if (true) {
+                    debugger;
+                    i = key + 1;
+                    //$("#contendorDash").append(creaHtml(i,value.idNodoNivel));
+                    //$("#validTipoEquipo_" + i).html(value.idTipoEquipo);
+
+                    $("#titulo_" + i).html("Resumen General " + value.descNodoNivel);
+                    //$("#valEquipoDescripcion_" + i).html(value.desTipoEquipo);
+
+                    $("#container_gauge_fallos1_" + i).html(value.porcDWTime + " %");
+                    $("#container_gauge_fallos2_" + i).html("Terminales fuera de línea");
+                    creaGraficoBarra(i, value.porcUpTime, value.porcDWTime);
+                    
+                    
+                    
+                    var sumaNoOperativo = parseInt(value.totalEqFueraLinea) + parseInt(value.totalEqImpAtascada) + parseInt(value.totalEqImpSinPapel) + parseInt(value.totalEqPerifericoErr);
+                    var totalOperativos = parseInt(value.totalEqEnLinea) + parseInt(sumaNoOperativo);
+
+                    $("#tdPorOperativosEquipos_" + i).html(value.porcUpTime+"%"); //% Operativos
+                    $("#tdPorNoOperativosEquipos_" + i).html(value.porcDWTime+"%"); //% No Operativos
+                    $("#tdOperativosEquipos_" + i).html(value.totalEqEnLinea); //Operativos
+                    $("#tdSinComunicacionEquipos_" + i).html(value.totalEqFueraLinea); //Sin Comunicación                   
+                    $("#tdImpSinPapel_" + i).html(value.totalEqImpSinPapel); // Impresora sin papel
+                    $("#tdImpIrre_" + i).html(value.totalEqImpAtascada); // Impresora Atascada
+                    $("#tdErrorPerifericosEquipos_" + i).html(value.totalEqPerifericoErr); //Error Periféricos
+                    $("#tdTotalEquipos_" + i).html(totalOperativos); //Total
+                    $("#tdTotalEPPPDCL_" + i).html(value.totalEqNoAplica); //Terminales Pendientes Cliente 
+                    $("#tdTotalTerminales_" + i).html(totalOperativos); //Total Terminales
+                    $("#lblEquiposOK_" + i).html(value.totalEqEnLinea);//Operativos
+                    $("#lblEquiposFalla_" + i).html(sumaNoOperativo);//No Operativo
+                    
+                }
+            });
+        }
+        $("#myModal").modal('hide');
+    } catch (e) {
+
+    }
+
+}
+
 function creaHtml(i, idNodoNivel) {
     var cadena = "";
     cadena += '<div id="valEquipoDescripcion_'+i+'" style="display:none"></div>';
@@ -173,64 +220,7 @@ function creaHtml(i, idNodoNivel) {
     cadena += '</div></div></div></div>';
     return cadena;
 }
-/*function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
-    Highcharts.chart('container_gauge_' + i, {
-        chart: {
-            type: 'column',
-            height: 255,
-            width: 180
-        },
-        credits: {
-            enabled: false
-        },
-        title: {
-            text: ''
-        },
-        xAxis: {
-            categories: [''],
-            lineColor: '#fff',
-            tickWidth: 0,
-        },
-        yAxis: {
-            min: 0,
-            max: 100,
-            gridLineColor: '#fff',
-            title: {
-                text: ''
-            },
-            labels: {
-                style: {
-                    color: '#fff'
-                }
-            }
-        },
-        tooltip: {
-            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
-            shared: true,
-            enabled: false
-        },
-        plotOptions: {
-            column: {
-                stacking: 'percent',
-                stickyTracking: false
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        series: [{
-            name: 'Operativos',
-            color: '#92d283',
-            data: [porcentajeEquiposUpTime]
-        }, {
-            name: 'Falla',
-            color: '#ea5942',
-            data: [porcentajeFallaGrafico]
-        }]
-    },
-	function callback() {
-	});
-}*/
+
 
 function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
     Highcharts.chart('container_gauge_' + i, {
@@ -331,3 +321,8 @@ function VerDetalleTerminales(seleccionado,i,formato) {
     window.location.href = "../ReporteDetalle/DetalleTerminalesInformes.html?" + vars;
 }
 
+setInterval(function(){
+    $("#myModal").modal('show');
+    actualizaEquipoClientes();
+    $("#myModal").modal('hide');
+},300000)

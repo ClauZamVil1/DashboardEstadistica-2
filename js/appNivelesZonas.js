@@ -107,133 +107,58 @@ function EquipoClientes(idCliente,idNodoNivel) {
 
 }
 
-function OldcreaHtml(i) {
-    // Nuevo estilo -------------------------------------------------
-    var idNodoDetalle = 0;
-    var div = '<div class="row contenedorCmr" >';
-    div += '<div id="valdesczona_' + i + '" style="display:none"></div>';
-    div += '<div id="validzona_' + i + '" style="display:none"></div>';
-    div += '<div class="header" id="descripcionZona_' + i + '"></div>';
+function actualizaEquipoClientes() {
+    debugger;
+    try {
+        var datos = obtenerDatosDashboard(_idCliente, _idNodoNivel, 1, 0);
+        debugger;
+        if (datos != null && datos.length > 0) {
+            var i = 0;
+            $(datos).each(function (key, value) {
+                debugger;
+                i = i + 1;
+                //$("#ulPaginacion").append(creaHtml(i,_idNodoNivel,value.idNodoNivel, value.idGrupo));
+                creaGraficoBarra(i, value.porcUpTime, value.porcDWTime);
 
-    div += '<div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 box-macro-total">';
-    div += '    <div class="container_gauge_cont">';
+                $("#titulo_" + i).html("Resumen Region " + value.descNodoNivel);
+                //$("#valEquipoDescripcion_" + i).html(value.desTipoEquipo);
 
-    div += '        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-    div += '            <div id="container_' + i + '" class="container_gauge_style">';
-    div += '            </div>';
-    div += '        </div>';
+                $("#container_gauge_fallos1_" + i).html(value.porcDWTime + " %");
+                $("#container_gauge_fallos2_" + i).html("Terminales fuera de línea");
+                creaGraficoBarra(i, value.porcUpTime, value.porcDWTime);
+                
+                
+                
+                var sumaNoOperativo = parseInt(value.totalEqFueraLinea) + parseInt(value.totalEqImpAtascada) + parseInt(value.totalEqImpSinPapel) + parseInt(value.totalEqPerifericoErr);
+                var totalOperativos = parseInt(value.totalEqEnLinea) + parseInt(sumaNoOperativo);
 
-    div += '        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="visibility:hidden; height:0px; width:0px;">';
-    div += '            <div id="leyenda">';
-    div += '                <ul>';
-    div += '                    <li>';
-    div += '                        <div style="background-color:#36ae57; width:20px; height:20px; border-radius: 50%; float:left; margin-top:14px; margin-left:10px;">  ';
-    div += '                        </div>';
-    div += '                        <div id="dvTituloOperativos">Operativos</div>';
-    div += '                    </li>';
-    div += '                    <li>';
-    div += '                        <div id="dvTituloFallas"></div>No Operativos';
-    div += '                    </li>';
-    div += '                </ul>';
-    div += '            </div>';
-    div += '        </div>  ';
+                $("#tdPorOperativosEquipos_" + i).html(value.porcUpTime+"%"); //% Operativos
+                $("#tdPorNoOperativosEquipos_" + i).html(value.porcDWTime+"%"); //% No Operativos
+                $("#tdOperativosEquipos_" + i).html(value.totalEqEnLinea); //Operativos
+                $("#tdSinComunicacionEquipos_" + i).html(value.totalEqFueraLinea); //Sin Comunicación                   
+                $("#tdImpSinPapel_" + i).html(value.totalEqImpSinPapel); // Impresora sin papel
+                $("#tdImpIrre_" + i).html(value.totalEqImpAtascada); // Impresora Atascada
+                $("#tdErrorPerifericosEquipos_" + i).html(value.totalEqPerifericoErr); //Error Periféricos
+                $("#tdTotalEquipos_" + i).html(totalOperativos); //Total
+                $("#tdTotalEPPPDCL_" + i).html(value.totalEqNoAplica); //Terminales Pendientes Cliente 
+                $("#tdTotalTerminales_" + i).html(totalOperativos); //Total Terminales
+                $("#lblEquiposOK_" + i).html(value.totalEqEnLinea);//Operativos
+                $("#lblEquiposFalla_" + i).html(sumaNoOperativo);//No Operativo
+                
+            });
+        }else{
+            //$("#myModal").modal('hide');
+            $("#modalTitle").text("Error con servicio");
+            $("#modalMensaje").text("Disculpe las molestias");
+            $("#myModal").modal('show');
+        }
+        $("#myModal").modal('hide');
+    } catch (e) {
 
-    div += '        <div id="container_gauge_fallos">';
-    div += '            <div class="container_gauge_fallos1" id="container_gauge_fallos1_' + i + '"></div>';
-    div += '            <div id="container_gauge_fallos2">Terminales fuera de línea</div>';
-    div += '        </div>';
-    div += '   </div>';
-    div += '</div>';
+    }
 
-    div += '<div class="col-xs-12 col-sm-7 col-md-6 col-lg-8" id="dvDetalleTerminales">';
-    div += '    <div class="row">';
-    div += '         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-    div += '            <h2 id="DB_titulo_principal" class="titulo-principal">Detalle Terminales</h2>';
-    div += '            <div class="ver-detalle-boton">';
-    div += '                 <div></div>';
-    div += '                 <button id="btnVerDetalle' + i + '" type="button" value ="' + idNodoDetalle + '" class="btn btnVerDetalle" onclick="javascript:verDetalle(' + i + ')">Ver detalle</button>';
-
-    div += '            </div>';
-    div += '        </div>';
-
-    div += '        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">';
-    div += '            <div id="dvContentDetalleTerminales">';
-    div += '                            <div class="dvContentDetalleTerminales_item_l">Operativos';
-    div += '                                <div class="dvDetalleTerminales_datoNum" id="tdOperativosEquipos_' + i + '"></div>';
-    div += '                                <div class="dvDetalleTerminales_datoPor" id="tdOperativosPorcentaje"></div>';
-    div += '                            </div>';
-
-    div += '                            <div class="dvContentDetalleTerminales_item_r">Sin Comunicación';
-    div += '                                <div class="dvDetalleTerminales_datoNum" id="tdSinComunicacionEquipos_' + i + '"></div>';
-    div += '                                <div class="dvDetalleTerminales_datoPor" id="tdSinComunicacionPorcentaje"></div>';
-    div += '                            </div>';
-    div += '                            <div id="capaImpresora_' + i + '">';
-    div += '                                <div class="dvContentDetalleTerminales_item_l">Impresora Atascada ';
-    div += '                                    <div class="dvDetalleTerminales_datoNum" id="tdImpIrre_' + i + '"></div>';
-    div += '                                    <div class="dvDetalleTerminales_datoPor" id="tdImpIrre80MMPorcentaje"></div>';
-    div += '                                </div>';
-
-    div += '                                <div class="dvContentDetalleTerminales_item_r">Impresora sin Papel';
-    div += '                                    <div class="dvDetalleTerminales_datoNum" id="tdImpSinPapel_' + i + '"></div>';
-    div += '                                    <div class="dvDetalleTerminales_datoPor" id="tdImpSinPapel80MMPorcentaje"></div>';
-    div += '                                </div>';
-    div += '                            </div>';
-
-    div += '                            <div class="dvContentDetalleTerminales_item_l">Error Periféricos';
-    div += '                                <div class="dvDetalleTerminales_datoNum" id="tdErrorPerifericosEquipos_' + i + '"></div>';
-    div += '                                <div class="dvDetalleTerminales_datoPor" id="tdErrorPerifericosPorcentaje"></div>';
-    div += '                            </div>';
-
-    div += '                            <div class="dvContentDetalleTerminales_item_r">Term. Pendientes';
-    div += '                                <div class="dvDetalleTerminales_datoNum" id="tdTotalEPPPDCL_' + i + '"></div>';
-    div += '                            </div>';
-
-    div += '                </table> ';
-    div += '            </div>';
-    div += '        </div>';
-
-    div += '    </div><!--END ROW-->';
-    div += '</div>';
-
-    div += '<div class="" >';
-
-
-    /*contadores*/
-    div += '<div class="">';
-    div += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 detalle_impresion_cont">';
-    div += '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="detalle_contador_' + i + '"></div">';
-    div += '</div>';
-    /*fin contadores*/
-
-    div += '    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 detalle_impresion_cont" >';
-    div += '        <div id="detalle_total">';
-
-    div += '            <div class="detalleTotal_item" onclick="VerDetalleTerminal(\'TOTAL\',' + i + ',' + idGrupo + ');">';
-    div += '                <div class="detalleTotal_item_nombre" id="detalleTotal_item_nombre_terminales_' + i + '"></div>';//total terminales
-    div += '                <div class="detalleTotal_item_icon"></div>';
-    div += '            </div>';
-    div += '            <div class="detalleTotal_separador"></div>';
-
-    div += '            <div class="detalleTotal_item" onclick="VerDetalleTerminal(\'OPERATIVOS\',' + i + ',' + idGrupo + ');">';
-    div += '                <div class="detalleTotal_item_nombre" id="detalleTotal_item_nombre_operativo_' + i + '"></div>';//Operativos
-    div += '                <div class="detalleTotal_item_icon" ></div>';
-    div += '            </div>';
-    div += '            <div class="detalleTotal_separador"></div>';
-
-    div += '            <div class="detalleTotal_item2" onclick="VerDetalleTerminal(\'FALLAS\',' + i + ',' + idGrupo + ');">';
-    div += '                <div class="detalleTotal_item_nombre" id="detalleTotal_item_nombre_totalfallas_' + i + '"></div>';
-    div += '                <div  class="detalleTotal_item_icon2" ></div>';
-    div += '            </div>';
-
-    div += '        </div>';
-    div += '    </div>';
-    //<!--END COL-->
-    div += '</div>';
-    //<!--END ROW-->
-    //<!--END COL-->
-    div += '</div>';
-    return div;
 }
+
 
 function creaHtml(i, idNegocio, idGrupo) {
     var cadena = "";
@@ -340,65 +265,6 @@ function creaHtml(i, idNegocio, idGrupo) {
     return cadena;
 }
 
-/*function creaGraficoBarra(i, Porcentaje_terminales, Porcentaje_fallas) {
-    Highcharts.chart('container_' + i + '', {
-        chart: {
-            type: 'column',
-            height: 255,
-            width: 180
-        },
-        credits: {
-            enabled: false
-        },
-        title: {
-            text: ''
-        },
-        xAxis: {
-            categories: [''],
-            lineColor: '#fff',
-            tickWidth: 0,
-        },
-        yAxis: {
-            min: 0,
-            max: 100,
-            gridLineColor: '#fff',
-            title: {
-                text: ''
-            },
-            labels: {
-                style: {
-                    color: '#fff'
-                }
-            }
-        },
-        plotOptions: {
-            column: {
-                stacking: 'percent',
-                stickyTracking: false
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
-            shared: true,
-            enabled: false
-        },
-        series: [{
-            name: 'Operativos',
-            color: '#92d283',
-            data: [Porcentaje_terminales]
-        }, {
-            name: 'Falla',
-            color: '#ea5942',
-            data: [Porcentaje_fallas]
-        }]
-    },
-            function callback() {
-            });
-}*/
-
 function creaGraficoBarra(i, porcentajeEquiposUpTime, porcentajeFallaGrafico) {
     Highcharts.chart('container_gauge_' + i, {
         chart: {
@@ -497,3 +363,9 @@ function VerDetalleTerminal(seleccionado, i, idGrupo) {
     vars = "zona=" + idzona + '&idCliente=' + _idCliente + "&equipo=" + _idtipoequipo + '&formato=' + _idNegocio + '&seleccionado=' + filtroSeleccionado ;
     window.location.href = "../ReporteDetalle/DetalleTerminalesInformes.html?" + vars;
 }
+
+setInterval(function(){
+    $("#myModal").modal('show');
+    actualizaEquipoClientes();
+    $("#myModal").modal('hide');
+},300000)
